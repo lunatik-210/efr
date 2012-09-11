@@ -60,9 +60,9 @@ class Game:
 
     def __loop(self):
         s = self.state.event(pygame.event.get())
+        if s: self.state = s
         self.state.paint()
         pygame.display.update()
-        if s: self.state = s
 
     def __quit(self):
         pygame.display.quit()

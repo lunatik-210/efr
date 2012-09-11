@@ -8,6 +8,7 @@ if not pygame.mixer: logging.warning('Warning, sound disabled')
 import engine
 from button import Button
 from loader import load_image
+from objects import PigOnTractor
 
 class MainMenu(engine.State):
     def init(self):
@@ -52,8 +53,15 @@ class About(engine.State):
         
 class Game(engine.State):
     def init(self):
-        image = load_image('bg_800x600.png')
-        self.screen.blit(image[0], (0,0))
+        self.image = load_image('bg_800x600.png')
+        self.screen.blit(self.image[0], (0,0))
+
+        self.player = PigOnTractor()
+
+    def paint(self):
+        self.screen.blit(self.image[0], (0,0))
+        self.player.draw(self.screen)
+        pass
 
     def event(self, events):
         for event in events:

@@ -12,7 +12,7 @@ from objects import PigOnTractor
 
 class MainMenu(engine.State):
     def init(self):
-        image = load_image('just_to_test_screen.png') # pygame.image.load(os.path.join("./", 'just_to_test_screen.png')).convert()      
+        image = load_image('just_to_test_screen.png')     
         self.screen.blit(image[0], (0,0))
 
         self.start_button = Button(self.screen, "start.png", (250, 100))
@@ -51,6 +51,32 @@ class About(engine.State):
                 if event.key == K_ESCAPE:
                     return MainMenu(self.game, self.debug)
         
+class Scene:
+    
+    #########################
+    # Pixels for main screen
+    # Sky 0 - 208
+    # Ground 208 - 280
+    # Road 280 - 412 - 544
+    # Ground 544 - 600
+    #########################
+
+    def __init__(self):
+        solid_objects = []
+        transparent_objects = []
+
+    # draw scene to the screen
+    def draw(self, screen):
+        pass
+
+    # just add new generated object
+    def add(self, object, is_solid):
+        pass
+
+    # must clean from objects which has gone from the screen
+    def clean(self):
+        pass
+
 class Game(engine.State):
     def init(self):
         self.image = load_image('bg_800x600.png')

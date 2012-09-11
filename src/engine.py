@@ -21,6 +21,10 @@ class State:
         """Overload to process sequence of events"""
         return """If you want to go to another state return it here"""
 
+    def action(self, passed_time):
+        """Overload to do some action"""
+        return 
+
 class Quit(State):
     """A state to quit the state engine."""
     
@@ -53,14 +57,15 @@ class Game:
 
         clock = pygame.time.Clock()
         while not self.quit:
-            clock.tick(self.fps)
-            self.__loop()
+            passed_time = clock.tick(self.fps)
+            self.__loop(passed_time)
 
         self.__quit()
 
-    def __loop(self):
+    def __loop(self, passed_time):
         s = self.state.event(pygame.event.get())
         if s: self.state = s
+        self.state.action(passed_time)
         self.state.paint()
         pygame.display.update()
 

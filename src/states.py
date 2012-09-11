@@ -9,6 +9,8 @@ import engine
 from button import Button
 from loader import load_image
 from objects import PigOnTractor
+from objects import Object
+from random import uniform
 
 class MainMenu(engine.State):
     def init(self):
@@ -25,7 +27,7 @@ class MainMenu(engine.State):
             if event.type == pygame.QUIT:
                 return engine.Quit(self.game, self.debug)
             elif event.type == pygame.KEYDOWN: 
-                if event.key == K_ESCAPE:
+                if event.key == pygame.K_ESCAPE:
                     return engine.Quit(self.game, self.debug)
             elif event.type == MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
@@ -48,9 +50,9 @@ class About(engine.State):
             if event.type == pygame.QUIT:
                 return engine.Quit(self.game, self.debug)
             elif event.type == pygame.KEYDOWN: 
-                if event.key == K_ESCAPE:
+                if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
-        
+
 class Scene:
     
     #########################
@@ -62,20 +64,40 @@ class Scene:
     #########################
 
     def __init__(self):
-        solid_objects = []
-        transparent_objects = []
+        self.area_map = { 'sky' : (0, 208),
+                          'top_ground' : (208, 280),
+                          'road' : (280, 544),
+                          'bottom_ground' : (544, 600) }
+
+        self.road_time_interval = 2000
+        self.road_time_passed = 0
+
+        self.borders = (800, 600)
+        self.solid_objects = []
+        self.transparent_objects = []
 
     # draw scene to the screen
     def draw(self, screen):
-        pass
-
-    # just add new generated object
-    def add(self, object, is_solid):
-        pass
+        for obj in self.transparent_objects:
+            obj.draw(screen)
 
     # must clean from objects which has gone from the screen
     def clean(self):
-        pass
+        for obj in self.transparent_objects:
+            if obj.x < 0:
+                self.transparent_objects.remove(obj)
+
+    # generate new sequence of objects for the scene
+    def generate(self, passed_time):
+        self.road_time_passed += passed_time
+        if self.road_time_passed > self.road_time_interval:
+            self.road_time_passed = 0
+            self.transparent_objects.append( Object( (700, 412), 'double_line', False ) )
+
+    # just bias whole scene to the left
+    def bias(self):
+        for obj in self.transparent_objects:
+            obj.x -= 2
 
 class Game(engine.State):
     def init(self):
@@ -84,16 +106,25 @@ class Game(engine.State):
 
         self.player = PigOnTractor()
 
-    def paint(self):
-        self.screen.blit(self.image[0], (0,0))
-        self.player.draw(self.screen)
-        pass
+        self.scene = Scene()
 
     def event(self, events):
         for event in events:
             if event.type == pygame.QUIT:
                 return engine.Quit(self.game, self.debug)
             elif event.type == pygame.KEYDOWN: 
-                if event.key == K_ESCAPE:
+                if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
+                #elif event.key == pygame.K_RIGHT:
+        
 
+    def action(self, passed_time):
+        self.scene.generate(passed_time)
+        self.scene.bias()
+        self.scene.clean()
+
+    def paint(self):
+        self.screen.blit(self.image[0], (0,0))
+        self.scene.draw(self.screen)
+        self.player.draw(self.screen)
+        

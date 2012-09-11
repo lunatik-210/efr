@@ -21,7 +21,7 @@ if __name__ == "__main__":
     """
 
     fullscreen_option = True
-    debug_option = True # Actually False as default, but who cares
+    debug_option = True # Actually False as default, but who cares <_<
 
     argv = sys.argv
     for arg in argv:

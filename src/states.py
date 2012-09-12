@@ -9,6 +9,8 @@ import engine
 from button import Button
 from loader import load_image
 from objects import PigOnTractor
+from objects import BigWheel
+
 from objects import Object
 from random import uniform
 
@@ -104,6 +106,7 @@ class Game(engine.State):
         self.screen.blit(self.image[0], (0,0))
 
         self.player = PigOnTractor()
+        self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
 
         self.scene = Scene()
 
@@ -111,11 +114,34 @@ class Game(engine.State):
         for event in events:
             if event.type == pygame.QUIT:
                 return engine.Quit(self.game, self.debug)
+
             elif event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
-                #elif event.key == pygame.K_RIGHT:
-        
+                if event.key == K_UP:
+                    self.moveUp = True
+                    self.moveDown = False
+                elif event.key == K_DOWN:
+                    self.moveDown = True
+                    self.moveUp = False
+                elif event.key == K_LEFT:
+                    self.moveLeft = True
+                    self.moveRight = False
+                elif event.key == K_RIGHT:
+                    self.moveRight = True
+                    self.moveLeft = False
+
+            elif event.type == KEYUP:
+                if event.key == K_UP:
+                    self.moveUp = False
+                elif event.key == K_DOWN:
+                    self.moveDown = False
+                elif event.key == K_LEFT:
+                    self.moveLeft = False
+                elif event.key == K_RIGHT:
+                    self.moveRight = False
+
+        self.player.update(self.moveUp, self.moveDown, self.moveLeft, self.moveRight)
 
     def action(self, passed_time):
         self.scene.generate(passed_time)

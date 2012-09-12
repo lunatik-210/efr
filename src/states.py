@@ -105,6 +105,8 @@ class Game(engine.State):
         self.screen.blit(self.image[0], (0,0))
 
         self.player = PigOnTractor()
+        self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
+        self.rate = 4
 
         self.scene = Scene()
 
@@ -112,11 +114,59 @@ class Game(engine.State):
         for event in events:
             if event.type == pygame.QUIT:
                 return engine.Quit(self.game, self.debug)
+
             elif event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
-                #elif event.key == pygame.K_RIGHT:
-        
+                if event.key == K_UP:
+                    self.moveUp = True
+                    self.moveDown = False
+                elif event.key == K_DOWN:
+                    self.moveDown = True
+                    self.moveUp = False
+                elif event.key == K_LEFT:
+                    self.moveLeft = True
+                    self.moveRight = False
+                elif event.key == K_RIGHT:
+                    self.moveRight = True
+                    self.moveLeft = False
+
+            elif event.type == KEYUP:
+                if event.key == K_UP:
+                    self.moveUp = False
+                elif event.key == K_DOWN:
+                    self.moveDown = False
+                elif event.key == K_LEFT:
+                    self.moveLeft = False
+                elif event.key == K_RIGHT:
+                    self.moveRight = False
+
+        self.bias()
+
+    def bias(self):
+        # TODO: get constants from global settings
+        WINDOWWIDTH = 800
+        WINDOWHEIGHT = 600
+
+        if self.moveUp or self.moveDown or self.moveLeft or self.moveRight:
+            if self.moveUp:
+                self.player.y -= self.rate
+            if self.moveDown:
+                self.player.y += self.rate
+            if self.moveLeft:
+                self.player.x -= self.rate
+            if self.moveRight:
+                self.player.x += self.rate
+
+        # TODO: set right limit for player movements
+        if self.player.x < 0:
+            self.player.x = 0
+        if self.player.x > WINDOWWIDTH - self.player.width:
+            self.player.x = WINDOWWIDTH - self.player.width
+        if self.player.y < 0:
+            self.player.y = 0
+        if self.player.y > WINDOWHEIGHT - self.player.height:
+            self.player.y = WINDOWHEIGHT - self.player.height
 
     def action(self, passed_time):
         self.scene.generate(passed_time)

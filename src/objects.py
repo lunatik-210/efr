@@ -19,6 +19,7 @@ class Object:
 class PigOnTractor:
     def __init__(self):
         self.image, self.rect = load_image('pig_on_tractor.png', 'alpha')
+        self.width, self.height = self.image.get_size()
         self.x, self.y = (300, 300)
 
     def draw(self, screen):

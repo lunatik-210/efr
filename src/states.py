@@ -9,6 +9,8 @@ import engine
 from button import Button
 from loader import load_image
 from objects import PigOnTractor
+from objects import BigWheel
+
 from objects import Object
 from random import uniform
 
@@ -106,7 +108,6 @@ class Game(engine.State):
 
         self.player = PigOnTractor()
         self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
-        self.rate = 4
 
         self.scene = Scene()
 
@@ -141,32 +142,7 @@ class Game(engine.State):
                 elif event.key == K_RIGHT:
                     self.moveRight = False
 
-        self.bias()
-
-    def bias(self):
-        # TODO: get constants from global settings
-        WINDOWWIDTH = 800
-        WINDOWHEIGHT = 600
-
-        if self.moveUp or self.moveDown or self.moveLeft or self.moveRight:
-            if self.moveUp:
-                self.player.y -= self.rate
-            if self.moveDown:
-                self.player.y += self.rate
-            if self.moveLeft:
-                self.player.x -= self.rate
-            if self.moveRight:
-                self.player.x += self.rate
-
-        # TODO: set right limit for player movements
-        if self.player.x < 0:
-            self.player.x = 0
-        if self.player.x > WINDOWWIDTH - self.player.width:
-            self.player.x = WINDOWWIDTH - self.player.width
-        if self.player.y < 0:
-            self.player.y = 0
-        if self.player.y > WINDOWHEIGHT - self.player.height:
-            self.player.y = WINDOWHEIGHT - self.player.height
+        self.player.update(self.moveUp, self.moveDown, self.moveLeft, self.moveRight)
 
     def action(self, passed_time):
         self.scene.generate(passed_time)

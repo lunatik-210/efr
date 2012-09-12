@@ -73,30 +73,29 @@ class Scene:
         self.road_time_passed = 0
 
         self.borders = (800, 600)
-        self.solid_objects = []
-        self.transparent_objects = []
+        self.objects = []
 
     # draw scene to the screen
     def draw(self, screen):
-        for obj in self.transparent_objects:
+        for obj in self.objects:
             obj.draw(screen)
 
     # must clean from objects which has gone from the screen
     def clean(self):
-        for obj in self.transparent_objects:
+        for obj in self.objects:
             if obj.x < 0:
-                self.transparent_objects.remove(obj)
+                self.objects.remove(obj)
 
     # generate new sequence of objects for the scene
     def generate(self, passed_time):
         self.road_time_passed += passed_time
         if self.road_time_passed > self.road_time_interval:
             self.road_time_passed = 0
-            self.transparent_objects.append( Object( (700, 412), 'double_line', False ) )
+            self.objects.append( Object( (700, 400), 'double_line', False ) )
 
     # just bias whole scene to the left
     def bias(self):
-        for obj in self.transparent_objects:
+        for obj in self.objects:
             obj.x -= 2
 
 class Game(engine.State):

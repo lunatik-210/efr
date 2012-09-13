@@ -6,12 +6,10 @@ if not pygame.font: logging.warning('Warning, fonts disabled')
 if not pygame.mixer: logging.warning('Warning, sound disabled')
 
 import engine
+import objects
+
 from button import Button
 from loader import load_image
-from objects import PigOnTractor
-from objects import BigWheel
-
-from objects import Object
 from random import uniform
 
 class MainMenu(engine.State):
@@ -71,8 +69,7 @@ class Scene:
                           'road' : (280, 544),
                           'bottom_ground' : (544, 600) }
 
-        self.road_time_interval = 2000
-        self.road_time_passed = 0
+        self.passed_distance = 0
 
         self.borders = (800, 600)
         self.objects = []
@@ -85,27 +82,35 @@ class Scene:
     # must clean from objects which has gone from the screen
     def clean(self):
         for obj in self.objects:
-            if obj.x < 0:
+            if obj.x < -100:
                 self.objects.remove(obj)
 
     # generate new sequence of objects for the scene
-    def generate(self, passed_time):
-        self.road_time_passed += passed_time
-        if self.road_time_passed > self.road_time_interval:
-            self.road_time_passed = 0
-            self.objects.append( Object( (700, 400), 'double_line', False ) )
+    def generate(self):
+        if self.passed_distance % 130 == 0:
+            self.objects.append( objects.Object( (800, 400), 'double_line', False ) )
+        if self.passed_distance % 160 == 0:
+            gen_y = (int)(uniform(120, 175))
+            tree_n = (int)(uniform(0, 4))
+            self.objects.append( objects.Object( (800, gen_y), objects.objects['tree'][tree_n], False ) )
+        if self.passed_distance % 250 == 0:
+            gen_y = (int)(uniform(0, 150))
+            tree_n = (int)(uniform(0, 4))
+            self.objects.append( objects.Object( (800, gen_y), objects.objects['cloud'][tree_n], False ) )
 
     # just bias whole scene to the left
     def bias(self):
+        x_bias = 5
+        self.passed_distance = ( self.passed_distance + x_bias ) % 800
         for obj in self.objects:
-            obj.x -= 2
+            obj.x -= x_bias
 
 class Game(engine.State):
     def init(self):
         self.image = load_image('bg_800x600.png')
         self.screen.blit(self.image[0], (0,0))
 
-        self.player = PigOnTractor()
+        self.player = objects.PigOnTractor()
         self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
 
         self.scene = Scene()
@@ -141,10 +146,10 @@ class Game(engine.State):
                 elif event.key == K_RIGHT:
                     self.moveRight = False
 
+    def action(self, passed_time):
         self.player.update(self.moveUp, self.moveDown, self.moveLeft, self.moveRight)
 
-    def action(self, passed_time):
-        self.scene.generate(passed_time)
+        self.scene.generate()
         self.scene.bias()
         self.scene.clean()
 

@@ -3,6 +3,8 @@ from loader import load_image
 from random import uniform
 import objects
 
+from config import *
+
 class Scene:
     
     #########################
@@ -17,7 +19,7 @@ class Scene:
         self.passed_distance = 0
         self.road_border_id = 0
 
-        self.borders = (800, 600)
+        self.borders = (WINDOW_WIDTH, WINDOW_HEIGHT)
         self.objects = { 1 : [], 2 : [] }
 
     # draw scene to the screen

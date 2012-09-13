@@ -1,5 +1,8 @@
 import pygame
 from loader import load_image
+from config import *
+import pyganim
+
 
 objects = { 'tree' : ['tree1', 'tree2', 'tree3', 'tree4'], 
             'cloud' : ['cloud1', 'cloud2', 'cloud3', 'cloud4'], 
@@ -35,91 +38,72 @@ class PigOnTractor:
         self.image, self.rect = load_image('pig_on_tractor.png', 'alpha')
         self.width, self.height = self.image.get_size()
         self.x, self.y = (300, 300)
-        self.rate = 4
+        self.rate = 5
 
-        self.big_wheel = BigWheel(self.x+15, self.y+70)
-        self.small_wheel = SmallWheel(self.x+115, self.y+95)
+        self.big_wheel = BigWheel()
+        self.small_wheel = SmallWheel()
+        self.smoke = Smoke()
 
     def draw(self, screen):
         screen.blit(self.image, (self.x, self.y))
-        self.big_wheel.draw(screen)
-        self.small_wheel.draw(screen)
+        self.big_wheel.draw(screen, (self.x+15, self.y+70))
+        self.small_wheel.draw(screen, (self.x+115, self.y+95))
+        self.smoke.draw(screen, (self.x+25, self.y-50))
+        
 
     def update(self, moveUp, moveDown, moveLeft, moveRight):
-        # TODO: get constants from global settings
-        WINDOWWIDTH = 800
-        WINDOWHEIGHT = 600
-
         if moveUp or moveDown or moveLeft or moveRight:
             if moveUp:
                 self.y -= self.rate
-                self.big_wheel.y -= self.rate 
-                self.small_wheel.y -= self.rate 
             if moveDown:
                 self.y += self.rate
-                self.big_wheel.y += self.rate
-                self.small_wheel.y += self.rate
             if moveLeft:
                 self.x -= self.rate
-                self.big_wheel.x -= self.rate
-                self.small_wheel.x -= self.rate
             if moveRight:
                 self.x += self.rate
-                self.big_wheel.x += self.rate
-                self.small_wheel.x += self.rate
 
-        # TODO: set right limit for player movements
         if self.x < 0:
             self.x = 0
-            self.big_wheel.x = 0
-            self.small_wheel.x = 0
-        if self.x > WINDOWWIDTH - self.width:
-            self.x = WINDOWWIDTH - self.width
-            self.big_wheel.x = WINDOWWIDTH - self.width
-            self.small_wheel.x = WINDOWWIDTH - self.width
+        if self.x > WINDOW_WIDTH - self.width:
+            self.x = WINDOW_WIDTH - self.width
         if self.y < 0:
             self.y = 0
-            self.big_wheel.y = 0
-            self.small_wheel.y = 0
-        if self.y > WINDOWHEIGHT - self.height:
-            self.y = WINDOWHEIGHT - self.height
-            self.big_wheel.y = WINDOWWIDTH - self.height
-            self.small_wheel.y = WINDOWWIDTH - self.height
+        if self.y > WINDOW_HEIGHT - self.height:
+            self.y = WINDOW_HEIGHT - self.height
 
-        # self.big_wheel.update()
-        # self.small_wheel.update()
+        self.big_wheel.update()
+        self.small_wheel.update()
+        self.smoke.update()
 
 
-class Wheel:
-    def __init__(self, x, y):
-        self.image, self.rect = load_image('big_wheel.png', 'alpha')
-        self.base_image = self.image
-        self.width, self.height = self.image.get_size()
-        self.x, self.y = (x, y)
+class Animation:
+    def __init__(self):
+        pass
 
     def update(self):
-        self.rotate()
+        self.image.play()
 
-    def draw(self, screen):
-        screen.blit(self.image, (self.x, self.y))
-
-    def rotate(self):
-        print "rotation"
-        self.image = pygame.transform.rotate(self.base_image, -10.0)
-        self.rect = self.image.get_rect()
+    def draw(self, screen, (x, y)):
+        self.image.blit(screen, (x, y))
 
 
-class BigWheel(Wheel):
-    def __init__(self, x, y):
-        self.image, self.rect = load_image('big_wheel.png', 'alpha')
-        self.base_image = self.image
-        self.width, self.height = self.image.get_size()
-        self.x, self.y = (x, y)
+class BigWheel(Animation):
+    def __init__(self, delay=0.1):
+        self.delay = delay
+        self.image = pyganim.PygAnimation([('../data/big_wheel1.png', self.delay),
+                                          ('../data/big_wheel2.png', self.delay),
+                                          ('../data/big_wheel3.png', self.delay)])
 
-class SmallWheel(Wheel):
-    def __init__(self, x, y):
-        self.image, self.rect = load_image('small_wheel.png', 'alpha')
-        self.base_image = self.image
-        self.width, self.height = self.image.get_size()
-        self.x, self.y = (x, y)
+class SmallWheel(Animation):
+    def __init__(self, delay=0.1):
+        self.delay = delay
+        self.image = pyganim.PygAnimation([('../data/small_wheel1.png', self.delay),
+                                          ('../data/small_wheel2.png', self.delay),
+                                          ('../data/small_wheel3.png', self.delay)])
 
+class Smoke(Animation):
+    def __init__(self, delay=0.1):
+        self.delay = delay
+        self.image = pyganim.PygAnimation([('../data/smoke1.png', self.delay),
+                                           ('../data/smoke2.png', self.delay),
+                                           ('../data/smoke3.png', self.delay)])

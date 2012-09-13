@@ -8,8 +8,13 @@ import engine
 import states
 #################################
 
+######### Game config ############
+from config import *
+#################################
+
+
 def start(fullscreen_option=True, debug_option=False):
-    game = engine.Game('Escape from Russia', (800, 600))
+    game = engine.Game('Escape from Russia', (WINDOW_WIDTH, WINDOW_HEIGHT))
     # game.set_full_screen(fullscreen_option)
     game.run(states.MainMenu(game, debug_option))
 

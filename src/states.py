@@ -78,10 +78,11 @@ class Scene:
 
     # must clean from objects which has gone from the screen
     def clean(self):
-        for lvl in range(1,3):
-            for obj in self.objects[lvl]:
-                if obj.x < -800:
-                    self.objects[lvl].remove(obj)
+        if self.passed_distance % 300:      
+            for lvl in range(1,3):
+                for obj in self.objects[lvl]:
+                    if obj.x < -800:
+                        self.objects[lvl].remove(obj)
 
     # generate new sequence of objects for the scene
     def generate(self):

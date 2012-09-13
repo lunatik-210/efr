@@ -8,18 +8,17 @@ if not pygame.mixer: logging.warning('Warning, sound disabled')
 import engine
 import objects
 
-from button import Button
+from scene import Scene
 from loader import load_image
-from random import uniform
 
 class MainMenu(engine.State):
     def init(self):
         image = load_image('just_to_test_screen.png')     
         self.screen.blit(image[0], (0,0))
 
-        self.start_button = Button(self.screen, "start.png", (250, 100))
-        self.about_button = Button(self.screen, "about.png", (250, 200))
-        self.exit_button = Button(self.screen, "exit.png", (250, 300))
+        self.start_button = objects.Button(self.screen, "start.png", (250, 100))
+        self.about_button = objects.Button(self.screen, "about.png", (250, 200))
+        self.exit_button = objects.Button(self.screen, "exit.png", (250, 300))
         return
 
     def event(self, events):
@@ -52,67 +51,6 @@ class About(engine.State):
             elif event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
-
-class Scene:
-    
-    #########################
-    # Pixels for main screen
-    # Sky 0 - 208
-    # Ground 208 - 280
-    # Road 280 - 412 - 544
-    # Ground 544 - 600
-    #########################
-
-    def __init__(self):
-        self.passed_distance = 0
-        self.road_border_id = 0
-
-        self.borders = (800, 600)
-        self.objects = { 1 : [], 2 : [] }
-
-    # draw scene to the screen
-    def draw(self, screen):
-        for lvl in range(1,3):
-            for obj in self.objects[lvl]:
-                obj.draw(screen)
-
-    # must clean from objects which has gone from the screen
-    def clean(self):
-        if self.passed_distance % 300:      
-            for lvl in range(1,3):
-                for obj in self.objects[lvl]:
-                    if obj.x < -800:
-                        self.objects[lvl].remove(obj)
-
-    # generate new sequence of objects for the scene
-    def generate(self):
-        if self.passed_distance % 130 == 0:
-            self.objects[1].append( objects.Object( (800, 400), 'double_line', False ) )
-        if self.passed_distance % 160 == 0:
-            gen_y = (int)(uniform(120, 175))
-            tree_n = (int)(uniform(0, 4))
-            self.objects[2].append( objects.Object( (800, gen_y), objects.objects['tree'][tree_n], False ) )
-        if self.passed_distance % 250 == 0:
-            gen_y = (int)(uniform(0, 150))
-            tree_n = (int)(uniform(0, 4))
-            self.objects[2].append( objects.Object( (800, gen_y), objects.objects['cloud'][tree_n], False, (int)(uniform(-3, 0) ) ) )
-        if self.passed_distance % 800 == 0:
-            self.objects[1].append( objects.Object( (800, 480), objects.objects['road'][self.road_border_id], False) )
-            self.objects[1].append( objects.Object( (800, 240), objects.objects['roadr'][self.road_border_id], False) )
-            self.objects[1].append( objects.Object( (800, 180), objects.objects['horizon'][self.road_border_id], False) )
-            self.road_border_id = (self.road_border_id + 1) % 3
-        if self.passed_distance % 170 == 0:
-            self.objects[1].append( objects.Object( (800, 340), 'line', False ) )
-            self.objects[1].append( objects.Object( (800, 470), 'line', False ) )
-
-    # just bias whole scene to the left
-    def bias(self):
-        x_bias = 5
-        self.passed_distance = ( self.passed_distance + x_bias ) % 800
-        for lvl in range(1,3):
-            for obj in self.objects[lvl]:
-                obj.x -= x_bias
-                obj.update()
 
 class Game(engine.State):
     def init(self):

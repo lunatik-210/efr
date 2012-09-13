@@ -63,9 +63,12 @@ class Game(engine.State):
         self.scene = Scene()
 
         for i in range(150):
-            self.scene.generate()
-            self.scene.bias()
-            self.scene.clean()
+            self.do_scene()
+
+    def do_scene(self):
+        self.scene.generate()
+        self.scene.bias()
+        self.scene.clean()        
 
     def event(self, events):
         for event in events:
@@ -101,9 +104,7 @@ class Game(engine.State):
     def action(self, passed_time):
         self.player.update(self.moveUp, self.moveDown, self.moveLeft, self.moveRight)
 
-        self.scene.generate()
-        self.scene.bias()
-        self.scene.clean()
+        self.do_scene()
 
     def paint(self):
         self.screen.blit(self.image[0], (0,0))

@@ -45,7 +45,7 @@ class Scene:
         if self.passed_distance % 250 == 0:
             gen_y = (int)(uniform(0, 150))
             tree_n = (int)(uniform(0, 4))
-            self.objects[2].append( objects.Object( (800, gen_y), objects.objects['cloud'][tree_n], False, (int)(uniform(-3, 0) ) ) )
+            self.objects[2].append( objects.Object( (800, gen_y), objects.objects['cloud'][tree_n], False, (int)(uniform(-3, -1) ) ) )
         if self.passed_distance % 800 == 0:
             self.objects[1].append( objects.Object( (800, 480), objects.objects['road'][self.road_border_id], False) )
             self.objects[1].append( objects.Object( (800, 240), objects.objects['roadr'][self.road_border_id], False) )

@@ -21,8 +21,8 @@ class State:
         """Overload to process sequence of events"""
         return """If you want to go to another state return it here"""
 
-    def action(self, passed_time):
-        """Overload to do some action"""
+    def update(self, passed_time):
+        """Overload to do some updates"""
         return 
 
 class Quit(State):
@@ -65,7 +65,7 @@ class Game:
     def __loop(self, passed_time):
         s = self.state.event(pygame.event.get())
         if s: self.state = s
-        self.state.action(passed_time)
+        self.state.update(passed_time)
         self.state.paint()
         pygame.display.update()
 

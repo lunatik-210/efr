@@ -68,9 +68,7 @@ class Speed:
         return self.value()
 
     def value(self):
-        print self.levels[self.level]
         return self.levels[self.level]
-
 
 class Game(engine.State):
     def init(self):
@@ -112,9 +110,8 @@ class Game(engine.State):
                 self.do_scene()
 
         self.player.event(events)
-        #self.scene.event(events)
 
-    def action(self, passed_time):
+    def update(self, passed_time):
         self.player.update()
         self.scene.update()
 

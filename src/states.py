@@ -60,7 +60,7 @@ class About(engine.State):
 class Speed:
     def __init__(self,):
         self.levels = [0, 25, 20, 10]
-        self.consumption = [ 0, 0.10, 0.04, 0.02 ]
+        self.consumption = [ 0, 0.30, 0.04, 0.02 ]
         self.level = 0
 
     def up(self):
@@ -141,8 +141,13 @@ class GameOver(engine.State):
         engine.State.__init__(self, game, debug)
 
     def init(self):
-        image = load_image(self.game_over_screen_name)     
+        image = load_image(self.game_over_screen_name)  
         self.screen.blit(image[0], (0,0))
+
+        myFont = pygame.font.SysFont("Calibri", 55)
+        self.screen.blit(myFont.render("Your final score %s!" % self.player_score, 1, (0,0,0)), (200, 550))
+           
+        
 
     def event(self, events):
         for event in events:

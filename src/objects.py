@@ -21,10 +21,9 @@ class Button():
         return self.rect.collidepoint( mouse[0], mouse[1] )
 
 class Object:
-    def __init__(self, coords, name, is_solid, x_bias = 0):
+    def __init__(self, coords, name, x_bias = 0):
         self.x, self.y = coords
         self.name = name
-        self.is_solid = is_solid
         self.x_bias = x_bias
         self.image, self.rect = load_image( name + '.png' , 'alpha')
 
@@ -89,7 +88,7 @@ class PlayerBar:
 
 class PigOnTractor(Object):
     def __init__(self, coords, speed):
-        Object.__init__(self, coords, 'tractor_body', True)
+        Object.__init__(self, coords, 'tractor_body')
         
         self.player_bar = PlayerBar()
         self.speed = speed

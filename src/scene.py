@@ -35,6 +35,10 @@ class Scene:
             for obj in self.objects[lvl]:
                 obj.draw(screen)
 
+        for lvl in range(1,len(self.solid_objects)+1):
+            for obj in self.solid_objects[lvl]:
+                obj.draw(screen)
+
     # must clean from objects which has gone from the screen
     def clean(self):
         if self.passed_distance % 300:      
@@ -43,29 +47,34 @@ class Scene:
                     if obj.x < -800:
                         self.objects[lvl].remove(obj)
 
+            for lvl in range(1,len(self.solid_objects)+1):
+                for obj in self.solid_objects[lvl]:
+                    if obj.x < -800:
+                        self.solid_objects[lvl].remove(obj)
+
     # generate new sequence of objects for the scene
     def generate(self):
         if self.passed_distance % 6000 == 0:
             house_n = (int)(uniform(0, 2))
-            self.objects[4].append( objects.Object( (800, 200), objects.objects['house'][house_n], False ) )
+            self.solid_objects[1].append( objects.Object( (800, 210), objects.objects['house'][house_n] ) )
         if self.passed_distance % 130 == 0:
-            self.objects[1].append( objects.Object( (800, 400), 'double_line', False ) )
+            self.objects[1].append( objects.Object( (800, 400), 'double_line' ) )
         if self.passed_distance % 160 == 0:
             gen_y = (int)(uniform(120, 175))
             tree_n = (int)(uniform(0, 4))
-            self.objects[3].append( objects.Object( (800, gen_y), objects.objects['tree'][tree_n], False ) )
+            self.objects[3].append( objects.Object( (800, gen_y), objects.objects['tree'][tree_n] ) )
         if self.passed_distance % 250 == 0:
             gen_y = (int)(uniform(0, 150))
             tree_n = (int)(uniform(0, 4))
-            self.objects[2].append( objects.Object( (800, gen_y), objects.objects['cloud'][tree_n], False, (int)(uniform(-3, -1) ) ) )
+            self.objects[2].append( objects.Object( (800, gen_y), objects.objects['cloud'][tree_n], (int)(uniform(-3, -1) ) ) )
         if self.passed_distance % 800 == 0:
-            self.objects[1].append( objects.Object( (800, 480), objects.objects['road'][self.road_border_id], False) )
-            self.objects[1].append( objects.Object( (800, 240), objects.objects['roadr'][self.road_border_id], False) )
-            self.objects[1].append( objects.Object( (800, 180), objects.objects['horizon'][self.road_border_id], False) )
+            self.objects[1].append( objects.Object( (800, 480), objects.objects['road'][self.road_border_id]) )
+            self.objects[1].append( objects.Object( (800, 240), objects.objects['roadr'][self.road_border_id]) )
+            self.objects[1].append( objects.Object( (800, 180), objects.objects['horizon'][self.road_border_id]) )
             self.road_border_id = (self.road_border_id + 1) % 3
         if self.passed_distance % 170 == 0:
-            self.objects[1].append( objects.Object( (800, 340), 'line', False ) )
-            self.objects[1].append( objects.Object( (800, 470), 'line', False ) )
+            self.objects[1].append( objects.Object( (800, 340), 'line' ) )
+            self.objects[1].append( objects.Object( (800, 470), 'line' ) )
 
     # just bias whole scene to the left
     def bias(self):
@@ -73,8 +82,16 @@ class Scene:
         for lvl in range(1,len(self.objects)+1):
             for obj in self.objects[lvl]:
                 obj.x -= self.x_bias
+
+        for lvl in range(1,len(self.solid_objects)+1):
+            for obj in self.solid_objects[lvl]:
+                obj.x -= self.x_bias
     
     def update(self):
         for lvl in range(1,len(self.objects)+1):
             for obj in self.objects[lvl]:
+                obj.update()
+
+        for lvl in range(1,len(self.solid_objects)+1):
+            for obj in self.solid_objects[lvl]:
                 obj.update()

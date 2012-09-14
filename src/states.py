@@ -7,19 +7,20 @@ if not pygame.mixer: logging.warning('Warning, sound disabled')
 
 import engine
 import objects
+import webbrowser
 
 from scene import Scene
 from loader import load_image
 
 class MainMenu(engine.State):
     def init(self):
-        image = load_image('just_to_test_screen.png')     
+        image = load_image('main_menu.jpg')     
         self.screen.blit(image[0], (0,0))
 
-        self.start_button = objects.Button(self.screen, "start.png", (250, 100))
-        self.about_button = objects.Button(self.screen, "about.png", (250, 200))
-        self.exit_button = objects.Button(self.screen, "exit.png", (250, 300))
-        return
+        self.start_button = pygame.Rect((440, 30), (340, 115))
+        self.about_button = pygame.Rect((320, 155), (250, 90))
+        self.exit_button = pygame.Rect((240, 255), (160, 60))
+        self.pyweek15_button = pygame.Rect((155, 310), (85, 45))
 
     def event(self, events):
         for event in events:
@@ -30,19 +31,19 @@ class MainMenu(engine.State):
                     return engine.Quit(self.game, self.debug)
             elif event.type == MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
-                if self.start_button.pressed(mouse):
+                if self.start_button.collidepoint( mouse[0], mouse[1] ):
                     return Game(self.game, self.debug)
-                elif self.about_button.pressed(mouse):
+                elif self.about_button.collidepoint( mouse[0], mouse[1] ):
                     return About(self.game, self.debug)
-                elif self.exit_button.pressed(mouse):
+                elif self.exit_button.collidepoint( mouse[0], mouse[1] ):
                     return engine.Quit(self.game, self.debug)
+                elif self.pyweek15_button.collidepoint( mouse[0], mouse[1] ):
+                    webbrowser.open_new("http://www.pyweek.org/15/")
 
 class About(engine.State):
     def init(self):
-        self.screen.fill((0,0,0))
-        myFont = pygame.font.SysFont("Calibri", 100)
-        myText = myFont.render("About", 1, (255,255,255))
-        self.screen.blit(myText, (300, 100))
+        self.screen.blit(load_image('about_menu.png')[0], (0,0))
+        self.pyweek15_button = pygame.Rect((155, 310), (75, 40))
 
     def event(self, events):
         for event in events:
@@ -51,6 +52,10 @@ class About(engine.State):
             elif event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
+            elif event.type == MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                if self.pyweek15_button.collidepoint( mouse[0], mouse[1] ):
+                    webbrowser.open_new("http://www.pyweek.org/15/")
 
 class Speed:
     def __init__(self,):

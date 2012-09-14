@@ -69,7 +69,7 @@ class PlayerBar:
         
 
     def draw(self, screen):
-        self.surface.blit( load_image('Dollar.png', 'alpha')[0], (0, 0) )
+        self.surface.blit( load_image('dollar.png', 'alpha')[0], (0, 0) )
 
         myFont = pygame.font.SysFont("Calibri", 70)
         self.surface.blit(myFont.render("%s" % self.score , 1, (0,0,0)), (70, 15))

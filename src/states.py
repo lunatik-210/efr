@@ -52,6 +52,26 @@ class About(engine.State):
                 if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
 
+class Speed:
+    def __init__(self,):
+        self.levels = [0, 25, 20, 10]
+        self.level = 0
+
+    def up(self):
+        if self.level < len(self.levels)-1:
+            self.level += 1
+        return self.value()
+
+    def down(self):
+        if self.level > 0:
+            self.level -= 1
+        return self.value()
+
+    def value(self):
+        print self.levels[self.level]
+        return self.levels[self.level]
+
+
 class Game(engine.State):
     def init(self):
         self.image = load_image('bg_800x600.png')
@@ -61,7 +81,13 @@ class Game(engine.State):
 
         self.scene = Scene()
 
-        for i in range(150):
+        self.UPDATESCENE = USEREVENT+1
+
+        self.speed = Speed()
+
+        pygame.time.set_timer(self.UPDATESCENE, self.speed.value())
+
+        for i in range(160):
             self.do_scene()
 
     def do_scene(self):
@@ -77,14 +103,20 @@ class Game(engine.State):
             elif event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
+                elif event.key == pygame.K_LEFT:
+                    pygame.time.set_timer(self.UPDATESCENE, self.speed.down())
+                elif event.key == pygame.K_RIGHT:
+                    pygame.time.set_timer(self.UPDATESCENE, self.speed.up())
+
+            elif event.type == self.UPDATESCENE:
+                self.do_scene()
 
         self.player.event(events)
-        self.scene.event(events)
+        #self.scene.event(events)
 
     def action(self, passed_time):
         self.player.update()
-
-        self.do_scene()
+        self.scene.update()
 
     def paint(self):
         self.screen.blit(self.image[0], (0,0))

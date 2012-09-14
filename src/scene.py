@@ -24,10 +24,7 @@ class Scene:
         self.borders = (WINDOW_WIDTH, WINDOW_HEIGHT)
         self.objects = { 1 : [], 2 : [], 3 : [] }
         
-        self.speeds = [0, 1, 5, 10]
-        self.speed = 2
-
-        self.x_bias = self.speeds[self.speed]
+        self.x_bias = 5
 
     # draw scene to the screen
     def draw(self, screen):
@@ -70,20 +67,8 @@ class Scene:
         for lvl in range(1,len(self.objects)+1):
             for obj in self.objects[lvl]:
                 obj.x -= self.x_bias
+    
+    def update(self):
+        for lvl in range(1,len(self.objects)+1):
+            for obj in self.objects[lvl]:
                 obj.update()
-
-    def event(self, events):
-        for event in events:
-            if event.type == pygame.KEYDOWN: 
-                if event.key == pygame.K_LEFT:
-                    if self.speed > 0:
-                        self.change_speed(self.speed-1)
-                elif event.key == pygame.K_RIGHT:
-                    if self.speed < len(self.speeds)-1:
-                        self.change_speed(self.speed+1)
-                        
-
-    def change_speed(self, speed):
-        self.speed = speed
-        self.x_bias = self.speeds[self.speed]
-        self.passed_distance = 10

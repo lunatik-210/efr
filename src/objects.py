@@ -58,37 +58,33 @@ class ProgressBar(pygame.Surface):
 
 class PlayerBar:
     def __init__(self):
-        self.score = 0
-        self.player_health = 40
-        self.tractor_health = 60
-        self.tractor_oil = 100
-        self.player_health_bar = ProgressBar((100, 0, 0, 100), (255, 0, 0, 255))
-        self.tractor_health_bar = ProgressBar((0, 0, 100, 100), (0, 0, 255, 255))
-        self.tractor_oil_bar = ProgressBar((0, 0, 0, 100), (0, 0, 0, 255))
-        self.surface = pygame.Surface((190, 100))
-       #self.surface.fill((147, 150, 73))
+        self.score = 1000
+        self.health = 60
+        self.gas = 100
+        self.health_bar = ProgressBar((100, 0, 0, 100), (255, 0, 0, 255))
+        self.gas_bar = ProgressBar((0, 0, 0, 100), (0, 0, 0, 255))
+        self.surface = pygame.Surface((190, 130))
         self.surface.fill((117, 152, 203))
         
 
     def draw(self, screen):
-        myFont = pygame.font.SysFont("Calibri", 30)
-        self.surface.blit(myFont.render("Score: %s" % self.score , 1, (0,0,0)), (80, 10))
+        self.surface.blit( load_image('Dollar.png', 'alpha')[0], (0, 0) )
+
+        myFont = pygame.font.SysFont("Calibri", 70)
+        self.surface.blit(myFont.render("%s" % self.score , 1, (0,0,0)), (70, 15))
 
         myFont = pygame.font.SysFont("Calibri", 20)
-        self.surface.blit(myFont.render("Pig" , 10, (0,0,0)), (5, 35))
-        self.surface.blit(myFont.render("Tractor" , 200, (0,0,0)), (5, 55))
-        self.surface.blit(myFont.render("Oil" , 1, (0,0,0)), (5, 75))
+        self.surface.blit(myFont.render("Health" , 10, (0,0,0)), (5, 85))
+        self.surface.blit(myFont.render("Gas" , 1, (0,0,0)), (5, 105))
 
-        self.surface.blit( self.player_health_bar, (60, 35) )
-        self.surface.blit( self.tractor_health_bar, (60, 55) )
-        self.surface.blit( self.tractor_oil_bar, (60, 75) )
+        self.surface.blit( self.health_bar, (60, 85) )
+        self.surface.blit( self.gas_bar, (60, 105) )
 
         screen.blit( self.surface, (600, 10) )
 
     def update(self):
-        self.player_health_bar.update(self.player_health)
-        self.tractor_health_bar.update(self.tractor_health)
-        self.tractor_oil_bar.update(self.tractor_oil)
+        self.health_bar.update(self.health)
+        self.gas_bar.update(self.gas)
 
 
 class PigOnTractor(Object):

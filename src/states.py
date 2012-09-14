@@ -57,7 +57,7 @@ class Game(engine.State):
         self.image = load_image('bg_800x600.png')
         self.screen.blit(self.image[0], (0,0))
 
-        self.player = objects.PigOnTractor((250, 300), 'tractor_body', True)
+        self.player = objects.PigOnTractor((250, 300))
 
         self.scene = Scene()
 

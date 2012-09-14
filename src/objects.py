@@ -37,8 +37,8 @@ class Object:
         pass
 
 class PigOnTractor(Object):
-    def __init__(self, coords, name, is_solid, x_bias = 0):
-        Object.__init__(self, coords, name, is_solid, x_bias)
+    def __init__(self, coords):
+        Object.__init__(self, coords, 'tractor_body', True)
         #self.image, self.rect = load_image('tractor_body.png', 'alpha')
 
         self.car_image, self.car_rect = load_image('car_body.png', 'alpha')

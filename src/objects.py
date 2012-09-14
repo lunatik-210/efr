@@ -59,8 +59,8 @@ class ProgressBar(pygame.Surface):
 
 class PlayerBar:
     def __init__(self):
-        self.score = 1000
-        self.health = 60
+        self.score = 100
+        self.health = 100
         self.gas = 100
         self.health_bar = ProgressBar((100, 0, 0, 100), (255, 0, 0, 255))
         self.gas_bar = ProgressBar((0, 0, 0, 100), (0, 0, 0, 255))

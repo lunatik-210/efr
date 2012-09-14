@@ -17,12 +17,15 @@ class Scene:
     # Ground 544 - 600
     #########################
 
-    def __init__(self):
+    def __init__(self, player):
         self.passed_distance = 0
         self.road_border_id = 0
 
         self.borders = (WINDOW_WIDTH, WINDOW_HEIGHT)
-        self.objects = { 1 : [], 2 : [], 3 : [] }
+
+        self.player = player
+        self.objects = { 1 : [], 2 : [], 3 : [], 4 : [] }
+        self.solid_objects = { 1 : [] }
         
         self.x_bias = 5
 
@@ -42,6 +45,9 @@ class Scene:
 
     # generate new sequence of objects for the scene
     def generate(self):
+        if self.passed_distance % 6000 == 0:
+            house_n = (int)(uniform(0, 2))
+            self.objects[4].append( objects.Object( (800, 200), objects.objects['house'][house_n], False ) )
         if self.passed_distance % 130 == 0:
             self.objects[1].append( objects.Object( (800, 400), 'double_line', False ) )
         if self.passed_distance % 160 == 0:
@@ -63,7 +69,7 @@ class Scene:
 
     # just bias whole scene to the left
     def bias(self):
-        self.passed_distance = ( self.passed_distance + self.x_bias ) % 800
+        self.passed_distance = ( self.passed_distance + self.x_bias )
         for lvl in range(1,len(self.objects)+1):
             for obj in self.objects[lvl]:
                 obj.x -= self.x_bias

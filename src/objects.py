@@ -9,6 +9,7 @@ objects = { 'tree' : ['tree1', 'tree2', 'tree3', 'tree4'],
             'road' : ['roadborder1', 'roadborder2', 'roadborder3'],
             'roadr' : ['roadborder1r', 'roadborder2r', 'roadborder3r'],
             'horizon' : ['horizon1', 'horizon2', 'horizon3'],
+            'house' : ['gas_station', 'workshop']
           }
 
 class Button():
@@ -52,7 +53,7 @@ class ProgressBar(pygame.Surface):
         pygame.Surface.fill(self, (255,255,255), pygame.Rect((self.border,self.border), (self.sub_width, self.sub_height)))
 
     def update(self, value):
-        self.value = (int)(1.46 * value)
+        self.value = (int)(self.sub_width * value / 100.0)
         self.fill()
         pygame.Surface.blit(self, gradients.horizontal((self.value, self.sub_height), self.start_col, self.end_color), (self.border,self.border))
 
@@ -83,15 +84,16 @@ class PlayerBar:
         screen.blit( self.surface, (600, 10) )
 
     def update(self):
-        self.health_bar.update(self.health)
-        self.gas_bar.update(self.gas)
+        self.health_bar.update((int)(self.health))
+        self.gas_bar.update((int)(self.gas))
 
 
 class PigOnTractor(Object):
-    def __init__(self, coords):
+    def __init__(self, coords, speed):
         Object.__init__(self, coords, 'tractor_body', True)
         
         self.player_bar = PlayerBar()
+        self.speed = speed
         #self.image, self.rect = load_image('tractor_body.png', 'alpha')
 
         self.car_image, self.car_rect = load_image('car_body.png', 'alpha')
@@ -104,6 +106,9 @@ class PigOnTractor(Object):
         self.big_wheel = BigWheel()
         self.small_wheel = SmallWheel()
         self.smoke = Smoke()
+
+    def consume_gas(self):
+        self.player_bar.gas -= self.speed.gas_consumption()
 
     def draw(self, screen):
         self.player_bar.draw(screen)

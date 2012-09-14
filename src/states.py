@@ -55,6 +55,7 @@ class About(engine.State):
 class Speed:
     def __init__(self,):
         self.levels = [0, 25, 20, 10]
+        self.consumption = [ 0.08, 0.05, 0.03, 0.01 ]
         self.level = 0
 
     def up(self):
@@ -70,20 +71,23 @@ class Speed:
     def value(self):
         return self.levels[self.level]
 
+    def gas_consumption(self):
+        return self.consumption[self.level]
+
 class Game(engine.State):
     def init(self):
         self.image = load_image('bg_800x600.png')
         self.screen.blit(self.image[0], (0,0))
-
-        self.player = objects.PigOnTractor((250, 300))
-
-        self.scene = Scene()
 
         self.UPDATESCENE = USEREVENT+1
 
         self.speed = Speed()
 
         pygame.time.set_timer(self.UPDATESCENE, self.speed.value())
+
+        self.player = objects.PigOnTractor((250, 300), self.speed)
+
+        self.scene = Scene(self.player)
 
         for i in range(160):
             self.do_scene()
@@ -108,6 +112,7 @@ class Game(engine.State):
 
             elif event.type == self.UPDATESCENE:
                 self.do_scene()
+                self.player.consume_gas()
 
         self.player.event(events)
 

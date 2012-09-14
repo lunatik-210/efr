@@ -66,7 +66,9 @@ class PlayerBar:
         self.tractor_health_bar = ProgressBar((0, 0, 100, 100), (0, 0, 255, 255))
         self.tractor_oil_bar = ProgressBar((0, 0, 0, 100), (0, 0, 0, 255))
         self.surface = pygame.Surface((190, 100))
-        self.surface.fill((230, 120, 30))
+       #self.surface.fill((147, 150, 73))
+        self.surface.fill((117, 152, 203))
+        
 
     def draw(self, screen):
         myFont = pygame.font.SysFont("Calibri", 30)

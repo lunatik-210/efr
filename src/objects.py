@@ -35,21 +35,32 @@ class Object:
 
 class PigOnTractor:
     def __init__(self):
-        self.image, self.rect = load_image('pig_on_tractor.png', 'alpha')
+        self.image, self.rect = load_image('tractor_body.png', 'alpha')
+        self.car_image, self.car_rect = load_image('car_body.png', 'alpha')
         self.width, self.height = self.image.get_size()
         self.x, self.y = (300, 300)
         self.rate = 5
+
+        self.peter, self.peter_rect = load_image('peter_open_front.png', 'alpha')
 
         self.big_wheel = BigWheel()
         self.small_wheel = SmallWheel()
         self.smoke = Smoke()
 
     def draw(self, screen):
+        screen.blit(self.peter, (self.x-14, self.y-20))
         screen.blit(self.image, (self.x, self.y))
-        self.big_wheel.draw(screen, (self.x+15, self.y+70))
-        self.small_wheel.draw(screen, (self.x+115, self.y+95))
-        self.smoke.draw(screen, (self.x+25, self.y-50))
+
+        self.big_wheel.draw(screen, (self.x, self.y+52))
+        self.small_wheel.draw(screen, (self.x+95, self.y+77))
+        self.smoke.draw(screen, (self.x+8, self.y-65))
         
+    def change_car(self):
+        self.image = self.car_image
+        self.rect = self.car_rect
+        # TODO:
+        # hide smoke
+        # make new wheels instead others
 
     def update(self, moveUp, moveDown, moveLeft, moveRight):
         if moveUp or moveDown or moveLeft or moveRight:
@@ -70,6 +81,7 @@ class PigOnTractor:
             self.y = 0
         if self.y > WINDOW_HEIGHT - self.height:
             self.y = WINDOW_HEIGHT - self.height
+            self.change_car()
 
         self.big_wheel.update()
         self.small_wheel.update()

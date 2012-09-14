@@ -2,7 +2,7 @@ import pygame
 from loader import load_image
 from config import *
 import pyganim
-
+import gradients
 
 objects = { 'tree' : ['tree1', 'tree2', 'tree3', 'tree4'], 
             'cloud' : ['cloud1', 'cloud2', 'cloud3', 'cloud4'], 
@@ -36,9 +36,64 @@ class Object:
     def event(self, events):
         pass
 
+class ProgressBar(pygame.Surface):
+    def __init__(self, start_col, end_color):
+        self.width = 120
+        self.height = 15
+        self.border = 1
+        self.start_col, self.end_color = start_col, end_color
+        self.sub_width = self.width-self.border*2
+        self.sub_height = self.height-self.border*2
+        self.value = self.sub_width
+        pygame.Surface.__init__(self, (self.width, self.height))
+
+    def fill(self):
+        pygame.Surface.fill(self, (0,0,0))
+        pygame.Surface.fill(self, (255,255,255), pygame.Rect((self.border,self.border), (self.sub_width, self.sub_height)))
+
+    def update(self, value):
+        self.value = (int)(1.46 * value)
+        self.fill()
+        pygame.Surface.blit(self, gradients.horizontal((self.value, self.sub_height), self.start_col, self.end_color), (self.border,self.border))
+
+class PlayerBar:
+    def __init__(self):
+        self.score = 0
+        self.player_health = 40
+        self.tractor_health = 60
+        self.tractor_oil = 100
+        self.player_health_bar = ProgressBar((100, 0, 0, 100), (255, 0, 0, 255))
+        self.tractor_health_bar = ProgressBar((0, 0, 100, 100), (0, 0, 255, 255))
+        self.tractor_oil_bar = ProgressBar((0, 0, 0, 100), (0, 0, 0, 255))
+        self.surface = pygame.Surface((190, 100))
+        self.surface.fill((230, 120, 30))
+
+    def draw(self, screen):
+        myFont = pygame.font.SysFont("Calibri", 30)
+        self.surface.blit(myFont.render("Score: %s" % self.score , 1, (0,0,0)), (80, 10))
+
+        myFont = pygame.font.SysFont("Calibri", 20)
+        self.surface.blit(myFont.render("Pig" , 10, (0,0,0)), (5, 35))
+        self.surface.blit(myFont.render("Tractor" , 200, (0,0,0)), (5, 55))
+        self.surface.blit(myFont.render("Oil" , 1, (0,0,0)), (5, 75))
+
+        self.surface.blit( self.player_health_bar, (60, 35) )
+        self.surface.blit( self.tractor_health_bar, (60, 55) )
+        self.surface.blit( self.tractor_oil_bar, (60, 75) )
+
+        screen.blit( self.surface, (600, 10) )
+
+    def update(self):
+        self.player_health_bar.update(self.player_health)
+        self.tractor_health_bar.update(self.tractor_health)
+        self.tractor_oil_bar.update(self.tractor_oil)
+
+
 class PigOnTractor(Object):
     def __init__(self, coords):
         Object.__init__(self, coords, 'tractor_body', True)
+        
+        self.player_bar = PlayerBar()
         #self.image, self.rect = load_image('tractor_body.png', 'alpha')
 
         self.car_image, self.car_rect = load_image('car_body.png', 'alpha')
@@ -53,6 +108,8 @@ class PigOnTractor(Object):
         self.smoke = Smoke()
 
     def draw(self, screen):
+        self.player_bar.draw(screen)
+
         screen.blit(self.peter, (self.x-14, self.y-20))
         screen.blit(self.image, (self.x, self.y))
 
@@ -93,6 +150,8 @@ class PigOnTractor(Object):
                     self.moveRight = False
 
     def update(self):
+        self.player_bar.update()
+
         if self.moveUp or self.moveDown or self.moveLeft or self.moveRight:
             if self.moveUp:
                 if self.y > ROAD_BORDER_TOP:

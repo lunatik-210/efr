@@ -60,7 +60,7 @@ class About(engine.State):
 class Speed:
     def __init__(self,):
         self.levels = [0, 25, 20, 10]
-        self.consumption = [ 0, 0.28, 0.04, 0.02 ]
+        self.consumption = [ 0, 0.10, 0.04, 0.02 ]
         self.level = 0
 
     def up(self):

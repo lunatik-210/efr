@@ -33,15 +33,20 @@ class Object:
     def update(self):
         self.x += self.x_bias
 
-class PigOnTractor:
-    def __init__(self):
-        self.image, self.rect = load_image('tractor_body.png', 'alpha')
+    def event(self, events):
+        pass
+
+class PigOnTractor(Object):
+    def __init__(self, coords, name, is_solid, x_bias = 0):
+        Object.__init__(self, coords, name, is_solid, x_bias)
+        #self.image, self.rect = load_image('tractor_body.png', 'alpha')
+
         self.car_image, self.car_rect = load_image('car_body.png', 'alpha')
         self.width, self.height = self.image.get_size()
-        self.x, self.y = (300, 300)
         self.rate = 5
-
         self.peter, self.peter_rect = load_image('peter_open_front.png', 'alpha')
+
+        self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
 
         self.big_wheel = BigWheel()
         self.small_wheel = SmallWheel()
@@ -62,16 +67,45 @@ class PigOnTractor:
         # hide smoke
         # make new wheels instead others
 
-    def update(self, moveUp, moveDown, moveLeft, moveRight):
-        if moveUp or moveDown or moveLeft or moveRight:
-            if moveUp:
-                self.y -= self.rate
-            if moveDown:
-                self.y += self.rate
-            if moveLeft:
-                self.x -= self.rate
-            if moveRight:
-                self.x += self.rate
+    def event(self, events):
+        for event in events:
+            if event.type == pygame.KEYDOWN: 
+                if event.key == pygame.K_UP:
+                    self.moveUp = True
+                    self.moveDown = False
+                elif event.key == pygame.K_DOWN:
+                    self.moveDown = True
+                    self.moveUp = False
+                elif event.key == pygame.K_LEFT:
+                    self.moveLeft = True
+                    self.moveRight = False
+                elif event.key == pygame.K_RIGHT:
+                    self.moveRight = True
+                    self.moveLeft = False
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    self.moveUp = False
+                elif event.key == pygame.K_DOWN:
+                    self.moveDown = False
+                elif event.key == pygame.K_LEFT:
+                    self.moveLeft = False
+                elif event.key == pygame.K_RIGHT:
+                    self.moveRight = False
+
+    def update(self):
+        if self.moveUp or self.moveDown or self.moveLeft or self.moveRight:
+            if self.moveUp:
+                if self.y > ROAD_BORDER_TOP:
+                    self.y -= self.rate
+            if self.moveDown:
+                if self.y < ROAD_BORDER_BOTTOM:
+                    self.y += self.rate
+            if self.moveLeft:
+                #self.x -= self.rate
+                pass
+            if self.moveRight:
+                #self.x += self.rate
+                pass
 
         if self.x < 0:
             self.x = 0

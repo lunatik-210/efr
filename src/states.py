@@ -57,8 +57,7 @@ class Game(engine.State):
         self.image = load_image('bg_800x600.png')
         self.screen.blit(self.image[0], (0,0))
 
-        self.player = objects.PigOnTractor()
-        self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
+        self.player = objects.PigOnTractor((250, 300), 'tractor_body', True)
 
         self.scene = Scene()
 
@@ -78,31 +77,12 @@ class Game(engine.State):
             elif event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
-                if event.key == K_UP:
-                    self.moveUp = True
-                    self.moveDown = False
-                elif event.key == K_DOWN:
-                    self.moveDown = True
-                    self.moveUp = False
-                elif event.key == K_LEFT:
-                    self.moveLeft = True
-                    self.moveRight = False
-                elif event.key == K_RIGHT:
-                    self.moveRight = True
-                    self.moveLeft = False
 
-            elif event.type == KEYUP:
-                if event.key == K_UP:
-                    self.moveUp = False
-                elif event.key == K_DOWN:
-                    self.moveDown = False
-                elif event.key == K_LEFT:
-                    self.moveLeft = False
-                elif event.key == K_RIGHT:
-                    self.moveRight = False
+        self.player.event(events)
+        self.scene.event(events)
 
     def action(self, passed_time):
-        self.player.update(self.moveUp, self.moveDown, self.moveLeft, self.moveRight)
+        self.player.update()
 
         self.do_scene()
 

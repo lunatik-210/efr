@@ -1,4 +1,6 @@
 
+import pygame
+
 from loader import load_image
 from random import uniform
 import objects
@@ -20,18 +22,23 @@ class Scene:
         self.road_border_id = 0
 
         self.borders = (WINDOW_WIDTH, WINDOW_HEIGHT)
-        self.objects = { 1 : [], 2 : [] }
+        self.objects = { 1 : [], 2 : [], 3 : [] }
+        
+        self.speeds = [0, 1, 5, 10]
+        self.speed = 2
+
+        self.x_bias = self.speeds[self.speed]
 
     # draw scene to the screen
     def draw(self, screen):
-        for lvl in range(1,3):
+        for lvl in range(1,len(self.objects)+1):
             for obj in self.objects[lvl]:
                 obj.draw(screen)
 
     # must clean from objects which has gone from the screen
     def clean(self):
         if self.passed_distance % 300:      
-            for lvl in range(1,3):
+            for lvl in range(1,len(self.objects)+1):
                 for obj in self.objects[lvl]:
                     if obj.x < -800:
                         self.objects[lvl].remove(obj)
@@ -43,11 +50,11 @@ class Scene:
         if self.passed_distance % 160 == 0:
             gen_y = (int)(uniform(120, 175))
             tree_n = (int)(uniform(0, 4))
-            self.objects[2].append( objects.Object( (800, gen_y), objects.objects['tree'][tree_n], False ) )
+            self.objects[3].append( objects.Object( (800, gen_y), objects.objects['tree'][tree_n], False ) )
         if self.passed_distance % 250 == 0:
             gen_y = (int)(uniform(0, 150))
             tree_n = (int)(uniform(0, 4))
-            self.objects[1].append( objects.Object( (800, gen_y), objects.objects['cloud'][tree_n], False, (int)(uniform(-3, -1) ) ) )
+            self.objects[2].append( objects.Object( (800, gen_y), objects.objects['cloud'][tree_n], False, (int)(uniform(-3, -1) ) ) )
         if self.passed_distance % 800 == 0:
             self.objects[1].append( objects.Object( (800, 480), objects.objects['road'][self.road_border_id], False) )
             self.objects[1].append( objects.Object( (800, 240), objects.objects['roadr'][self.road_border_id], False) )
@@ -59,9 +66,24 @@ class Scene:
 
     # just bias whole scene to the left
     def bias(self):
-        x_bias = 5
-        self.passed_distance = ( self.passed_distance + x_bias ) % 800
-        for lvl in range(1,3):
+        self.passed_distance = ( self.passed_distance + self.x_bias ) % 800
+        for lvl in range(1,len(self.objects)+1):
             for obj in self.objects[lvl]:
-                obj.x -= x_bias
+                obj.x -= self.x_bias
                 obj.update()
+
+    def event(self, events):
+        for event in events:
+            if event.type == pygame.KEYDOWN: 
+                if event.key == pygame.K_LEFT:
+                    if self.speed > 0:
+                        self.change_speed(self.speed-1)
+                elif event.key == pygame.K_RIGHT:
+                    if self.speed < len(self.speeds)-1:
+                        self.change_speed(self.speed+1)
+                        
+
+    def change_speed(self, speed):
+        self.speed = speed
+        self.x_bias = self.speeds[self.speed]
+        self.passed_distance = 10

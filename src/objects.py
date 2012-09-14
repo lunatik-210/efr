@@ -53,9 +53,10 @@ class ProgressBar(pygame.Surface):
         pygame.Surface.fill(self, (255,255,255), pygame.Rect((self.border,self.border), (self.sub_width, self.sub_height)))
 
     def update(self, value):
-        self.value = (int)(self.sub_width * value / 100.0)
         self.fill()
-        pygame.Surface.blit(self, gradients.horizontal((self.value, self.sub_height), self.start_col, self.end_color), (self.border,self.border))
+        if value > 1:
+            self.value = (int)(self.sub_width * value / 100.0)
+            pygame.Surface.blit(self, gradients.horizontal((self.value, self.sub_height), self.start_col, self.end_color), (self.border,self.border))
 
 class PlayerBar:
     def __init__(self):
@@ -66,7 +67,6 @@ class PlayerBar:
         self.gas_bar = ProgressBar((0, 0, 0, 100), (0, 0, 0, 255))
         self.surface = pygame.Surface((190, 130))
         self.surface.fill((117, 152, 203))
-        
 
     def draw(self, screen):
         self.surface.blit( load_image('dollar.png', 'alpha')[0], (0, 0) )
@@ -87,7 +87,6 @@ class PlayerBar:
         self.health_bar.update((int)(self.health))
         self.gas_bar.update((int)(self.gas))
 
-
 class PigOnTractor(Object):
     def __init__(self, coords, speed):
         Object.__init__(self, coords, 'tractor_body', True)
@@ -106,6 +105,16 @@ class PigOnTractor(Object):
         self.big_wheel = BigWheel()
         self.small_wheel = SmallWheel()
         self.smoke = Smoke()
+
+    def get_score(self):
+        return self.player_bar.score
+
+    def status(self):
+        if self.player_bar.gas < 0:
+            return 'arrested'
+        if self.player_bar.health <0:
+            return 'died'
+        return None
 
     def consume_gas(self):
         self.player_bar.gas -= self.speed.gas_consumption()

@@ -60,7 +60,7 @@ class About(engine.State):
 class Speed:
     def __init__(self,):
         self.levels = [0, 25, 20, 10]
-        self.consumption = [ 0.08, 0.05, 0.03, 0.01 ]
+        self.consumption = [ 0, 0.28, 0.04, 0.02 ]
         self.level = 0
 
     def up(self):
@@ -100,7 +100,7 @@ class Game(engine.State):
     def do_scene(self):
         self.scene.generate()
         self.scene.bias()
-        self.scene.clean()        
+        self.scene.clean()  
 
     def event(self, events):
         for event in events:
@@ -124,9 +124,30 @@ class Game(engine.State):
     def update(self, passed_time):
         self.player.update()
         self.scene.update()
+        if self.player.status() == 'arrested':
+            return GameOver(self.game, self.debug, 'game_over_arrested.png', self.player.get_score())
+        elif self.player.status() == 'died':
+            return GameOver(self.game, self.debug, 'game_over_die.png', self.player.get_score())
 
     def paint(self):
         self.screen.blit(self.image[0], (0,0))
         self.scene.draw(self.screen)
         self.player.draw(self.screen)
         
+class GameOver(engine.State):
+    def __init__(self, game, debug, game_over_screen_name, player_score):
+        self.game_over_screen_name = game_over_screen_name
+        self.player_score = player_score
+        engine.State.__init__(self, game, debug)
+
+    def init(self):
+        image = load_image(self.game_over_screen_name)     
+        self.screen.blit(image[0], (0,0))
+
+    def event(self, events):
+        for event in events:
+            if event.type == pygame.QUIT:
+                return engine.Quit(self.game, self.debug)
+            elif event.type == pygame.KEYDOWN: 
+                if event.key == pygame.K_ESCAPE:
+                    return MainMenu(self.game, self.debug)

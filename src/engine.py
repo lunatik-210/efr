@@ -65,7 +65,8 @@ class Game:
     def __loop(self, passed_time):
         s = self.state.event(pygame.event.get())
         if s: self.state = s
-        self.state.update(passed_time)
+        s = self.state.update(passed_time)
+        if s: self.state = s
         self.state.paint()
         pygame.display.update()
 

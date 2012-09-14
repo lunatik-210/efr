@@ -54,7 +54,7 @@ class Scene:
 
     # generate new sequence of objects for the scene
     def generate(self):
-        if self.passed_distance % 6000 == 0:
+        if self.passed_distance % 4500 == 0:
             house_n = (int)(uniform(0, 2))
             self.solid_objects[1].append( objects.Object( (800, 210), objects.objects['house'][house_n] ) )
         if self.passed_distance % 130 == 0:
@@ -95,3 +95,5 @@ class Scene:
         for lvl in range(1,len(self.solid_objects)+1):
             for obj in self.solid_objects[lvl]:
                 obj.update()
+                self.player.test_action(obj)      
+                    

@@ -146,8 +146,6 @@ class GameOver(engine.State):
 
         myFont = pygame.font.SysFont("Calibri", 55)
         self.screen.blit(myFont.render("Your final score %s!" % self.player_score, 1, (0,0,0)), (200, 550))
-           
-        
 
     def event(self, events):
         for event in events:

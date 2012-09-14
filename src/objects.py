@@ -25,10 +25,10 @@ class Object:
         self.x, self.y = coords
         self.name = name
         self.x_bias = x_bias
-        self.image, self.rect = load_image( name + '.png' , 'alpha')
+        self.image, self.rect = load_image( self.name + '.png' , 'alpha')
 
     def draw(self, screen):
-        screen.blit(self.image, (self.x, self.y))
+        self.rect = screen.blit(self.image, (self.x, self.y))
 
     def update(self):
         self.x += self.x_bias
@@ -65,9 +65,11 @@ class PlayerBar:
         self.health_bar = ProgressBar((100, 0, 0, 100), (255, 0, 0, 255))
         self.gas_bar = ProgressBar((0, 0, 0, 100), (0, 0, 0, 255))
         self.surface = pygame.Surface((190, 130))
-        self.surface.fill((117, 152, 203))
+        #self.surface.fill((117, 152, 203))
 
     def draw(self, screen):
+        self.surface.fill((117, 152, 203))
+        
         self.surface.blit( load_image('dollar.png', 'alpha')[0], (0, 0) )
 
         myFont = pygame.font.SysFont("Calibri", 70)
@@ -86,13 +88,14 @@ class PlayerBar:
         self.health_bar.update((int)(self.health))
         self.gas_bar.update((int)(self.gas))
 
-class PigOnTractor(Object):
+class PigOnTractor():
     def __init__(self, coords, speed):
-        Object.__init__(self, coords, 'tractor_body')
         
+        self.x, self.y = coords
+        self.image, self.rect = load_image('tractor_body.png', 'alpha')
+
         self.player_bar = PlayerBar()
         self.speed = speed
-        #self.image, self.rect = load_image('tractor_body.png', 'alpha')
 
         self.car_image, self.car_rect = load_image('car_body.png', 'alpha')
         self.width, self.height = self.image.get_size()
@@ -104,6 +107,18 @@ class PigOnTractor(Object):
         self.big_wheel = BigWheel()
         self.small_wheel = SmallWheel()
         self.smoke = Smoke()
+
+    def test_action(self, obj):
+        if obj.name == 'gas_station':
+            if obj.rect.contains(self.peter_rect) and self.rect.contains(self.rect):
+                if self.player_bar.gas < 100 and self.player_bar.score > 0:
+                    self.player_bar.gas += 1.5
+                    self.player_bar.score -= 1
+        elif obj.name == 'workshop':
+            if obj.rect.contains(self.peter_rect) and self.rect.contains(self.rect):
+                if self.player_bar.health < 100 and self.player_bar.score > 0:
+                    self.player_bar.health += 2
+                    self.player_bar.score -= 1
 
     def get_score(self):
         return self.player_bar.score
@@ -121,8 +136,8 @@ class PigOnTractor(Object):
     def draw(self, screen):
         self.player_bar.draw(screen)
 
-        screen.blit(self.peter, (self.x-14, self.y-20))
-        screen.blit(self.image, (self.x, self.y))
+        self.peter_rect = screen.blit(self.peter, (self.x-14, self.y-20))
+        self.rect = screen.blit(self.image, (self.x, self.y))
 
         self.big_wheel.draw(screen, (self.x, self.y+52))
         self.small_wheel.draw(screen, (self.x+95, self.y+77))

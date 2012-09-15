@@ -204,12 +204,14 @@ class PigOnTractor():
                 if self.player_bar.gas < 100 and self.player_bar.score > 0:
                     self.player_bar.gas += 1
                     self.player_bar.score -= 1
+                    self.drop_coin_sound.play()
 
         elif obj.name == 'workshop':
             if obj.rect.contains(self.peter_rect) and self.speed.value() == 0:
                 if self.player_bar.health < 100 and self.player_bar.score > 0:
                     self.player_bar.health += 1.5
                     self.player_bar.score -= 1
+                    self.drop_coin_sound.play()
         elif obj.name == 'hedgehog' and obj.status != 'died':
             if self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
                 obj.status = 'died'

@@ -79,6 +79,10 @@ class Speed:
     def value(self):
         return self.levels[self.level]
 
+    def stop(self):
+        self.level = 0
+        pygame.time.set_timer(UPDATESCENE, self.value())        
+
     def gas_consumption(self):
         return self.consumption[self.level]
 

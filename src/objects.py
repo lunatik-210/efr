@@ -43,9 +43,14 @@ class Object:
         pass
 
 class Box(Object):
-    def __init__(self, coords, delay):
-        pass
-        #Object.__init__(self, coords, 'hedgehog')
+    def __init__(self, coords, delay = 0.1):
+        Object.__init__(self, coords, 'roadbox')
+        self.brokenbox_image = load_image('brokenbox.png', 'alpha')[0]
+        self.status = None
+
+    def update(self):
+        if self.status == 'died':
+            self.image = self.brokenbox_image
 
 class Hedgehog(Object):
     def __init__(self, coords, borders, delay = 0.1):
@@ -191,8 +196,13 @@ class PigOnTractor():
         elif obj.name == 'cleft':
             if (self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect)) or \
                 (self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect)):
-                obj.status = 'died'
                 self.player_bar.health -= 2
+        elif obj.name == 'roadbox' and obj.status != 'died':
+            if obj.rect.colliderect(self.peter_rect) and self.rect.colliderect(self.rect):
+                obj.status = 'died'
+                self.player_bar.health -= 8
+                self.player_bar.score += random.randint(10,20)
+                self.speed.stop()
 
     def get_score(self):
         return self.player_bar.score

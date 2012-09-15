@@ -3,6 +3,7 @@ import pygame
 
 from loader import load_image
 from random import uniform
+from random import choice
 import objects
 
 from config import *
@@ -25,7 +26,7 @@ class Scene:
 
         self.player = player
         self.objects = { 1 : [], 2 : [], 3 : [], 4 : [] }
-        self.solid_objects = { 1 : [], 2 : [], 3 : [] }
+        self.solid_objects = { 1 : [], 2 : [], 3 : [], 4 : [] }
         
         self.x_bias = 5
 
@@ -60,10 +61,13 @@ class Scene:
         if self.passed_distance % 1600 == 0:
             for i in range(int(uniform(1,3))):
                 self.solid_objects[3].append( objects.Hedgehog( (800, int(uniform(300, 500))), (300, 500)) )
+        if self.passed_distance % 2800 == 0:
+            self.solid_objects[4].append( objects.Box( (800, choice([250, 330, 380, 440]) )))
         if self.passed_distance % 1900 == 0:
             if int(uniform(0,2)) == 1:
                 self.solid_objects[2].append( objects.Object( (int(uniform(800, 900)), int(uniform(300, 500))), 'cleft' ) )
             self.solid_objects[2].append( objects.Object( (800, int(uniform(300, 500))), 'cleft' ) )
+
         if self.passed_distance % 130 == 0:
             self.objects[1].append( objects.Object( (800, 400), 'double_line' ) )
         if self.passed_distance % 160 == 0:

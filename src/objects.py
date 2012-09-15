@@ -199,10 +199,13 @@ class Police:
     def update(self):
         if self.speed.value() == 0:
             self.distance += 0.4
+            self.play()
         elif self.speed.value() == 25:
             self.distance += 0.3
+            self.play()
         elif self.speed.value() == 20:
             self.distance += 0.2
+            self.play()
         elif self.speed.value() == 10:
             self.distance -= 0.1
             self.gap_down()
@@ -222,11 +225,14 @@ class Police:
         if self.x > 130:
             self.status = 'arrest'
 
+    def play(self):
+        if 85 < self.distance < 86:
+            if not pygame.mixer.music.get_busy():
+                self.serena_sound.play()
+
     def gap_up(self):
         if self.x < 300:
             self.x += 2
-        if -193 < self.x < -190:
-            self.serena_sound.play()
 
     def gap_down(self):
         if self.x > -300:
@@ -292,7 +298,8 @@ class PigOnTractor():
                     self.player_bar.health -= 1
                 else:
                     self.player_bar.health -= 2
-                #self.grunt_sound.play()
+                if not pygame.mixer.music.get_busy():
+                    self.grunt_sound.play()
 
         elif obj.name == 'roadbox' and obj.status != 'died':
             if self.rect.colliderect(obj.rect):

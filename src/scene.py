@@ -57,7 +57,7 @@ class Scene:
     def generate(self):
         if self.passed_distance % 4500 == 0:
             house_n = (int)(uniform(0, 2))
-            self.solid_objects[1].append( objects.Object( (800, 210), objects.objects['house'][house_n] ) )
+            self.solid_objects[1].append( objects.Object( (800, 190), objects.objects['house'][house_n] ) )
         if self.passed_distance % 1600 == 0:
             for i in range(int(uniform(1,3))):
                 self.solid_objects[3].append( objects.Hedgehog( (800, int(uniform(300, 500))), (300, 500)) )

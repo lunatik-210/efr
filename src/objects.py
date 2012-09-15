@@ -235,6 +235,7 @@ class PigOnTractor():
         self.is_bulldozer = False
         self.drop_coin_sound = Music('drop_coin.ogg')
         self.drop_box_sound = Music('drop_box.ogg')
+        self.hedgehog_sound = Music('hedgehog_oops.ogg')
 
     def test_action(self, obj):
         if obj.name == 'gas_station':
@@ -260,6 +261,7 @@ class PigOnTractor():
                     self.player_bar.health -= 1
                     self.player_bar.score += 3
                     self.speed.down()
+                self.hedgehog_sound.play()
 
         elif obj.name == 'cleft':
             if (self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect)):

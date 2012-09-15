@@ -61,7 +61,7 @@ class Scene:
         if self.passed_distance % 1600 == 0:
             for i in range(int(uniform(1,3))):
                 self.solid_objects[3].append( objects.Hedgehog( (800, int(uniform(300, 500))), (300, 500)) )
-        if self.passed_distance % 2800 == 0:
+        if self.passed_distance % 3200 == 0:
             self.solid_objects[4].append( objects.Box( (800, choice([250, 330, 380, 440]) )))
         if self.passed_distance % 1900 == 0:
             if int(uniform(0,2)) == 1:

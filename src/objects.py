@@ -187,15 +187,13 @@ class PigOnTractor():
                     self.player_bar.health += 2
                     self.player_bar.score -= 1
         elif obj.name == 'hedgehog' and obj.status != 'died':
-            if (self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect)) or \
-                (self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect)):
+            if self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
                 obj.status = 'died'
                 self.player_bar.health -= 1
                 self.player_bar.score += 3
                 self.speed.down()
         elif obj.name == 'cleft':
-            if (self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect)) or \
-                (self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect)):
+            if self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
                 self.player_bar.health -= 2
         elif obj.name == 'roadbox' and obj.status != 'died':
             if obj.rect.colliderect(self.peter_rect) and self.rect.colliderect(self.rect):

@@ -13,7 +13,7 @@ def load_image(name, colorkey=None):
     try:
         image = pygame.image.load(fullname)
     except pygame.error, message:
-        print 'Cannot load image:', fullname
+        print 'Cannot load image: ', fullname
         raise SystemExit, message
     if colorkey == 'alpha':
         image = image.convert_alpha()
@@ -24,3 +24,13 @@ def load_image(name, colorkey=None):
                 colorkey = image.get_at((0,0))
             image.set_colorkey(colorkey, RLEACCEL)
     return image, image.get_rect()
+
+def load_sound(name):
+    fullname = os.path.join(data_dir, name)
+    try:
+        sound = pygame.mixer.Sound(fullname)
+    except pygame.error, message:
+        print 'Cannot load sound: ', fullname
+
+    return sound
+    

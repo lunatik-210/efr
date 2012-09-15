@@ -1,7 +1,7 @@
 import pygame
 import loader
 
-from loader import load_image
+from loader import load_image, load_sound
 from config import *
 
 import pyganim
@@ -178,6 +178,7 @@ class PigOnTractor():
         self.smoke = Smoke()
 
         self.is_bulldozer = False
+        self.drop_coin_sound = Music('drop_coin.ogg')
 
     def test_action(self, obj):
         if obj.name == 'gas_station':
@@ -185,6 +186,7 @@ class PigOnTractor():
                 if self.player_bar.gas < 100 and self.player_bar.score > 0:
                     self.player_bar.gas += 1
                     self.player_bar.score -= 1
+
         elif obj.name == 'workshop':
             if obj.rect.contains(self.peter_rect) and self.speed.value() == 0:
                 if self.player_bar.health < 100 and self.player_bar.score > 0:
@@ -345,3 +347,13 @@ class Smoke(Animation):
         self.image = pyganim.PygAnimation([(os.path.join(loader.data_dir, 'smoke1.png'), self.delay),
                                           (os.path.join(loader.data_dir, 'smoke2.png'), self.delay),
                                           (os.path.join(loader.data_dir, 'smoke3.png'), self.delay)])
+
+class Music():
+    def __init__(self, soundfile):
+        self.soundfile = soundfile
+        # pygame.mixer.init(FREQ, BITSIZE, CHANNELS, BUFFER)
+
+    def play(self):
+        sound = load_sound(self.soundfile)
+        sound.play(0) # Sound.play(loops=0, maxtime=0, fade_ms=0)
+

@@ -2,12 +2,16 @@ Escape from Russia
 ===============
 
 Entry in PyWeek #15  <http://www.pyweek.org/e/PyGeeks/>
+
 URL: https://github.com/lunatik-210/efr
+
 Team: PyGeeks
+
 Members: 
 + Andrew Lapin (lunatik) - andrew.d.lapin@gmail.com
 + Alexander Gudulin (sagod)
 + Michael Turusov (Sneaky4oe)
+
 License: see LICENSE.txt
 
 

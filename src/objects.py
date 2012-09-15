@@ -183,12 +183,12 @@ class PigOnTractor():
         if obj.name == 'gas_station':
             if obj.rect.contains(self.peter_rect) and self.speed.value() == 0:
                 if self.player_bar.gas < 100 and self.player_bar.score > 0:
-                    self.player_bar.gas += 1.5
+                    self.player_bar.gas += 1
                     self.player_bar.score -= 1
         elif obj.name == 'workshop':
             if obj.rect.contains(self.peter_rect) and self.speed.value() == 0:
                 if self.player_bar.health < 100 and self.player_bar.score > 0:
-                    self.player_bar.health += 2
+                    self.player_bar.health += 1.5
                     self.player_bar.score -= 1
         elif obj.name == 'hedgehog' and obj.status != 'died':
             if self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
@@ -206,7 +206,7 @@ class PigOnTractor():
                 else:
                     self.player_bar.health -= 2
         elif obj.name == 'roadbox' and obj.status != 'died':
-            if obj.rect.colliderect(self.peter_rect) and self.rect.colliderect(self.rect):
+            if self.rect.colliderect(obj.rect):
                 obj.status = 'died'
                 if self.is_bulldozer:
                     self.player_bar.health -= 4

@@ -97,7 +97,7 @@ class Game(engine.State):
 
         self.scene = Scene(self.player)
 
-        for i in range(160):
+        for i in range(200):
             self.do_scene()
 
     def do_scene(self):

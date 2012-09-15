@@ -27,7 +27,7 @@ data_py = os.path.abspath(os.path.dirname(__file__))
 data_dir = os.path.normpath(os.path.join(data_py, '..', 'data'))
 
 def load_image(name, colorkey=None):
-    fullname = os.path.join(data_dir, name)
+    fullname = os.path.join(data_dir, 'images', name)
     try:
         image = pygame.image.load(fullname)
     except pygame.error, message:
@@ -44,7 +44,7 @@ def load_image(name, colorkey=None):
     return image, image.get_rect()
 
 def load_sound(name):
-    fullname = os.path.join(data_dir, name)
+    fullname = os.path.join(data_dir, 'sounds', name)
     try:
         sound = pygame.mixer.Sound(fullname)
     except pygame.error, message:

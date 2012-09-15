@@ -11,40 +11,25 @@ License: see LICENSE.txt
 Running the Game
 ----------------
 
-On Windows or Mac OS X, locate the "start.pyw" file and double-click it.
+Linux pre-requirements: pygame 1.9.1 (http://www.pygame.org/download.shtml)
 
-Othewise open a terminal / console and "cd" to the game directory and run:
-
-  python start.py
+python start.py
 
 
 How to Play the Game
 --------------------
 
-yourgamedescription
+Thats the game about Pig Peter! He dreams to steal tractor
+and escape from Russia! 
 
-Move the cursor around the screen with the mouse.
+There are some objects in the game:
+1) Cops - they are tries to arrest you!
+2) Box - there're some score there
+3) Hedgehog - slows you and gives a bit of score
+4) Cleft - hits tractor
+5) Gas Staton - to buy gas
+6) Repair station - to repair tractor
+7) Car shop - to buy buldozer you have to pay 200 score
+8) Buldozer - it requires more gas but protected better
 
-Press the left mouse button to fire the ducks.
-
-
-Development notes 
------------------
-
-Creating a source distribution with::
-
-   python setup.py sdist
-
-You may also generate Windows executables and OS X applications::
-
-   python setup.py py2exe
-   python setup.py py2app
-
-Upload files to PyWeek with::
-
-   python pyweek_upload.py
-
-Upload to the Python Package Index with::
-
-   python setup.py register
-   python setup.py sdist upload
+Press the left/right/up/down to control Peter.

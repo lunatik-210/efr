@@ -184,7 +184,7 @@ class Police:
         self.police_bar = ProgressBar((0, 0, 255, 150), (200, 0, 0, 255), (290, 40, 1))
         self.distance = 0
         self.status = None
-        self.screech_sound = Music('screech.ogg')
+        self.screech_sound = Music('police.ogg')
 
     def draw(self, screen):
         self.rect = screen.blit(self.image, (self.x, self.y))

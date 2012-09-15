@@ -40,3 +40,13 @@ There are some objects in the game:
 + Buldozer - it requires more gas but protected better
 
 Press the up/down to control Peter, left/right - to speed up/down.
+
+Uses libs
+-----------------
+
+PyGame - game engine http://www.pygame.org/
+
+PyGame Animation library - http://inventwithpython.com/pyganim/
+
+Gradients lib allow to draw some gradients relatively easy - 
+http://www.pygame.org/project-gradients-307-491.html

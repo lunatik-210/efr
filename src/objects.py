@@ -88,7 +88,6 @@ class Hedgehog(Object):
         elif self.status == 'died':
             self.rect = screen.blit(self.bloodshit, (self.x, self.y))
 
-
 class ProgressBar(pygame.Surface):
     def __init__(self, start_col, end_color):
         self.width = 120
@@ -173,21 +172,17 @@ class PigOnTractor():
                     self.player_bar.health += 2
                     self.player_bar.score -= 1
         elif obj.name == 'hedgehog' and obj.status != 'died':
-            if self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect):
+            if (self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect)) or \
+                (self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect)):
                 obj.status = 'died'
                 self.player_bar.health -= 1
-                self.player_bar.score += 2
-            elif self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
-                obj.status = 'died'
-                self.player_bar.health -= 1
-                self.player_bar.score += 2
+                self.player_bar.score += 3
+                self.speed.down()
         elif obj.name == 'cleft':
-            if self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect):
+            if (self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect)) or \
+                (self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect)):
                 obj.status = 'died'
-                self.player_bar.health -= 3
-            elif self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
-                obj.status = 'died'
-                self.player_bar.health -= 3
+                self.player_bar.health -= 1
 
     def get_score(self):
         return self.player_bar.score

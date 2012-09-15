@@ -12,6 +12,8 @@ import webbrowser
 from scene import Scene
 from loader import load_image
 
+UPDATESCENE = USEREVENT+1
+
 class MainMenu(engine.State):
     def init(self):
         image = load_image('main_menu.jpg')     
@@ -62,16 +64,17 @@ class Speed:
         self.levels = [0, 25, 20, 10]
         self.consumption = [ 0, 0.30, 0.04, 0.02 ]
         self.level = 0
+        pygame.time.set_timer(UPDATESCENE, self.value())
 
     def up(self):
         if self.level < len(self.levels)-1:
             self.level += 1
-        return self.value()
+        pygame.time.set_timer(UPDATESCENE, self.value())
 
     def down(self):
         if self.level > 0:
             self.level -= 1
-        return self.value()
+        pygame.time.set_timer(UPDATESCENE, self.value())
 
     def value(self):
         return self.levels[self.level]
@@ -84,11 +87,7 @@ class Game(engine.State):
         self.image = load_image('bg_800x600.png')
         self.screen.blit(self.image[0], (0,0))
 
-        self.UPDATESCENE = USEREVENT+1
-
         self.speed = Speed()
-
-        pygame.time.set_timer(self.UPDATESCENE, self.speed.value())
 
         self.player = objects.PigOnTractor((250, 300), self.speed)
 
@@ -111,11 +110,11 @@ class Game(engine.State):
                 if event.key == pygame.K_ESCAPE:
                     return MainMenu(self.game, self.debug)
                 elif event.key == pygame.K_LEFT:
-                    pygame.time.set_timer(self.UPDATESCENE, self.speed.down())
+                    self.speed.down()
                 elif event.key == pygame.K_RIGHT:
-                    pygame.time.set_timer(self.UPDATESCENE, self.speed.up())
+                    self.speed.up()
 
-            elif event.type == self.UPDATESCENE:
+            elif event.type == UPDATESCENE:
                 self.do_scene()
                 self.player.consume_gas()
 

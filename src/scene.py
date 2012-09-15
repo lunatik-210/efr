@@ -61,6 +61,8 @@ class Scene:
             for i in range(int(uniform(1,3))):
                 self.solid_objects[3].append( objects.Hedgehog( (800, int(uniform(300, 500))), (300, 500)) )
         if self.passed_distance % 1900 == 0:
+            if int(uniform(0,2)) == 1:
+                self.solid_objects[2].append( objects.Object( (int(uniform(800, 900)), int(uniform(300, 500))), 'cleft' ) )
             self.solid_objects[2].append( objects.Object( (800, int(uniform(300, 500))), 'cleft' ) )
         if self.passed_distance % 130 == 0:
             self.objects[1].append( objects.Object( (800, 400), 'double_line' ) )

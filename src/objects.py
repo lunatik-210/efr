@@ -182,7 +182,7 @@ class PigOnTractor():
             if (self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect)) or \
                 (self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect)):
                 obj.status = 'died'
-                self.player_bar.health -= 1
+                self.player_bar.health -= 2
 
     def get_score(self):
         return self.player_bar.score

@@ -160,13 +160,14 @@ class PigOnTractor():
         
         self.x, self.y = coords
         self.image, self.rect = load_image('tractor_body.png', 'alpha')
+        self.image_bldzr, self.rect_bldzr = load_image('bulldozer.png', 'alpha')
+        self.width, self.height = self.image.get_size()
+        self.rate = 5
 
         self.player_bar = PlayerBar()
         self.speed = speed
 
         self.car_image, self.car_rect = load_image('car_body.png', 'alpha')
-        self.width, self.height = self.image.get_size()
-        self.rate = 5
         self.peter, self.peter_rect = load_image('peter_open_front.png', 'alpha')
 
         self.moveUp = self.moveDown = self.moveLeft = self.moveRight = False
@@ -174,6 +175,8 @@ class PigOnTractor():
         self.big_wheel = BigWheel()
         self.small_wheel = SmallWheel()
         self.smoke = Smoke()
+
+        self.is_bulldozer = False
 
     def test_action(self, obj):
         if obj.name == 'gas_station':
@@ -218,19 +221,25 @@ class PigOnTractor():
     def draw(self, screen):
         self.player_bar.draw(screen)
 
-        self.peter_rect = screen.blit(self.peter, (self.x-14, self.y-20))
-        self.rect = screen.blit(self.image, (self.x, self.y))
+        #   Car:                Bulldozer:
+        #       0. Pig              0. Wheels + smoke
+        #       1. Car              1. Bulldozer
+        #       2. Wheels + smoke
+        
+        if not self.is_bulldozer:
+            self.peter_rect = screen.blit(self.peter, (self.x-14, self.y-20))
+            self.rect = screen.blit(self.image, (self.x, self.y))
 
         self.big_wheel.draw(screen, (self.x, self.y+52))
         self.small_wheel.draw(screen, (self.x+95, self.y+77))
         self.smoke.draw(screen, (self.x+8, self.y-65))
-        
+
+        if self.is_bulldozer:
+            self.image = self.image_bldzr
+            self.rect = screen.blit(self.image, (self.x, self.y))
+            
     def change_car(self):
-        self.image = self.car_image
-        self.rect = self.car_rect
-        # TODO:
-        # hide smoke
-        # make new wheels instead others
+        self.is_bulldozer = True
 
     def event(self, events):
         for event in events:
@@ -262,6 +271,7 @@ class PigOnTractor():
 
         if self.moveUp or self.moveDown or self.moveLeft or self.moveRight:
             if self.moveUp:
+                self.change_car()
                 if self.y > ROAD_BORDER_TOP:
                     self.y -= self.rate
             if self.moveDown:
@@ -282,19 +292,22 @@ class PigOnTractor():
             self.y = 0
         if self.y > WINDOW_HEIGHT - self.height:
             self.y = WINDOW_HEIGHT - self.height
-            self.change_car()
 
-        self.big_wheel.update()
-        self.small_wheel.update()
-        self.smoke.update()
+        self.big_wheel.update(self.speed)
+        self.small_wheel.update(self.speed)
+        self.smoke.update(self.speed)
 
 
 class Animation:
     def __init__(self):
         self.rect = None
 
-    def update(self):
-        self.image.play()
+    def update(self, speed):
+        print speed.value()
+        if speed.value() == 0:
+            self.image.pause()
+        else:
+            self.image.play()
 
     def draw(self, screen, (x, y)):
         self.rect = self.image.blit(screen, (x, y))

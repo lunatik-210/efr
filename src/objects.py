@@ -184,6 +184,7 @@ class Police:
         self.police_bar = ProgressBar((0, 0, 255, 150), (200, 0, 0, 255), (290, 40, 1))
         self.distance = 0
         self.status = None
+        self.serena_sound = Music('police.ogg')
 
     def draw(self, screen):
         self.rect = screen.blit(self.image, (self.x, self.y))
@@ -224,6 +225,8 @@ class Police:
     def gap_up(self):
         if self.x < 300:
             self.x += 2
+        if -193 < self.x < -190:
+            self.serena_sound.play()
 
     def gap_down(self):
         if self.x > -300:

@@ -384,7 +384,7 @@ class PigOnTractor():
                     self.moveUp = False
                 elif event.key == pygame.K_DOWN:
                     self.moveDown = False
-                if event.key == pygame.K_LEFT:
+                elif event.key == pygame.K_LEFT:
                     self.moveLeft = False
                 elif event.key == pygame.K_RIGHT:
                     self.moveRight = False

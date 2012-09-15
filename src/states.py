@@ -95,6 +95,8 @@ class Game(engine.State):
 
         self.player = objects.PigOnTractor((250, 300), self.speed)
 
+        self.police = objects.Police((-100, 300), self.speed)
+
         self.scene = Scene(self.player)
 
         for i in range(200):
@@ -127,6 +129,7 @@ class Game(engine.State):
     def update(self, passed_time):
         self.player.update()
         self.scene.update()
+        self.police.update()
         if self.player.status() == 'arrested':
             return GameOver(self.game, self.debug, 'game_over_arrested.png', self.player.get_score())
         elif self.player.status() == 'died':
@@ -136,6 +139,7 @@ class Game(engine.State):
         self.screen.blit(self.image[0], (0,0))
         self.scene.draw(self.screen)
         self.player.draw(self.screen)
+        self.police.draw(self.screen)
         
 class GameOver(engine.State):
     def __init__(self, game, debug, game_over_screen_name, player_score):

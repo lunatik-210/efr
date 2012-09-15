@@ -155,6 +155,24 @@ class PlayerBar:
         self.health_bar.update((int)(self.health))
         self.gas_bar.update((int)(self.gas))
 
+class Police:
+    def __init__(self, coords, speed):
+        self.x, self.y = coords
+        self.image, self.rect = load_image('police.png', 'alpha')
+        self.left_wheel = SmallWheel()
+        self.right_wheel = SmallWheel()
+        self.speed = speed
+
+    def draw(self, screen):
+        self.rect = screen.blit(self.image, (self.x, self.y))
+
+        self.left_wheel.draw(screen, (self.x+47, self.y+102))
+        self.right_wheel.draw(screen, (self.x+170, self.y+102))
+
+    def update(self):
+        self.left_wheel.update(self.speed)
+        self.right_wheel.update(self.speed)
+
 class PigOnTractor():
     def __init__(self, coords, speed):
         

@@ -184,7 +184,6 @@ class Police:
         self.police_bar = ProgressBar((0, 0, 255, 150), (200, 0, 0, 255), (290, 40, 1))
         self.distance = 0
         self.status = None
-        self.screech_sound = Music('screech.ogg')
 
     def draw(self, screen):
         self.rect = screen.blit(self.image, (self.x, self.y))
@@ -225,8 +224,6 @@ class Police:
     def gap_up(self):
         if self.x < 300:
             self.x += 2
-        if -193 < self.x < -190:
-            self.screech_sound.play()
 
     def gap_down(self):
         if self.x > -300:
@@ -258,6 +255,7 @@ class PigOnTractor():
         self.drop_coin_sound = Music('drop_coin.ogg')
         self.drop_box_sound = Music('drop_box.ogg')
         self.hedgehog_sound = Music('hedgehog_oops.ogg')
+        self.grunt_sound = Music('grunt.ogg')
 
     def test_action(self, obj):
         if obj.name == 'gas_station':
@@ -291,6 +289,7 @@ class PigOnTractor():
                     self.player_bar.health -= 1
                 else:
                     self.player_bar.health -= 2
+                #self.grunt_sound.play()
 
         elif obj.name == 'roadbox' and obj.status != 'died':
             if self.rect.colliderect(obj.rect):

@@ -158,12 +158,14 @@ class PlayerBar:
         
         self.surface.blit( load_image('dollar.png', 'alpha')[0], (0, 0) )
 
-        myFont = pygame.font.SysFont("Calibri", 70)
-        self.surface.blit(myFont.render("%s" % self.score , 1, (0,0,0)), (70, 15))
 
-        myFont = pygame.font.SysFont("Calibri", 20)
+
+        myFont = pygame.font.Font(os.path.join(loader.data_dir, 'fonts', 'ALoveofThunder.ttf'), 40)
+        self.surface.blit(myFont.render("%s" % self.score , 10, (0,0,0)), (70, 15))
+
+        myFont = pygame.font.Font(os.path.join(loader.data_dir, 'fonts', 'ALoveofThunder.ttf'), 13)
         self.surface.blit(myFont.render("Health", 10, (0,0,0)), (5, 85))
-        self.surface.blit(myFont.render("Gas", 1, (0,0,0)), (5, 105))
+        self.surface.blit(myFont.render("Gas", 10, (0,0,0)), (5, 105))
 
         self.surface.blit( self.health_bar, (60, 85) )
         self.surface.blit( self.gas_bar, (60, 105) )
@@ -193,8 +195,8 @@ class Police:
         self.right_wheel.draw(screen, (self.x+170, self.y+102))
 
         screen.blit( self.police_bar, (10, 10) )
-        myFont = pygame.font.SysFont("Calibri", 30)
-        screen.blit(myFont.render("Cops are about to grab your", 1, (0, 0, 0)), (20, 20))
+        myFont = pygame.font.Font(os.path.join(loader.data_dir, 'fonts', 'ALoveofThunder.ttf'), 17)
+        screen.blit(myFont.render("Cops are about to grab you!", 1, (0, 0, 0)), (20, 20))
 
     def update(self):
         if self.speed.value() == 0:

@@ -204,6 +204,7 @@ class PigOnTractor():
 
         self.is_bulldozer = False
         self.drop_coin_sound = Music('drop_coin.ogg')
+        self.drop_box_sound = Music('drop_box.ogg')
 
     def test_action(self, obj):
         if obj.name == 'gas_station':
@@ -219,6 +220,7 @@ class PigOnTractor():
                     self.player_bar.health += 1.5
                     self.player_bar.score -= 1
                     self.drop_coin_sound.play()
+
         elif obj.name == 'hedgehog' and obj.status != 'died':
             if self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
                 obj.status = 'died'
@@ -228,12 +230,14 @@ class PigOnTractor():
                     self.player_bar.health -= 1
                     self.player_bar.score += 3
                     self.speed.down()
+
         elif obj.name == 'cleft':
             if (self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect)):
                 if self.is_bulldozer:
                     self.player_bar.health -= 1
                 else:
                     self.player_bar.health -= 2
+
         elif obj.name == 'roadbox' and obj.status != 'died':
             if self.rect.colliderect(obj.rect):
                 obj.status = 'died'
@@ -241,7 +245,8 @@ class PigOnTractor():
                     self.player_bar.health -= 4
                 else:
                     self.player_bar.health -= 8
-                self.player_bar.score += random.randint(10,20)
+                self.player_bar.score += random.randint(10, 20)
+                self.drop_box_sound.play()
                 self.speed.stop()
 
     def get_score(self):

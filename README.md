@@ -1,7 +1,7 @@
 Escape from Russia
 ===============
 
-Entry in PyWeek #15  <http://www.pyweek.org/15/>
+Entry in PyWeek #15  <http://www.pyweek.org/e/PyGeeks/>
 URL: https://github.com/lunatik-210/efr
 Team: PyGeeks
 Members: 

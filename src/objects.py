@@ -241,7 +241,7 @@ class PigOnTractor():
         if obj.name == 'gas_station':
             if obj.rect.contains(self.peter_rect) and self.speed.value() == 0:
                 if self.player_bar.gas < 100 and self.player_bar.score > 0:
-                    self.player_bar.gas += 1
+                    self.player_bar.gas += 1.5
                     self.player_bar.score -= 1
                     self.drop_coin_sound.play()
 

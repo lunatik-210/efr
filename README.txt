@@ -8,7 +8,7 @@ URL: https://github.com/lunatik-210/efr
 Team: PyGeeks
 
 Members: 
-+ Andrew Lapin (lunatik) - andrew.d.lapin@gmail.com
++ Andrew Lapin (lunatik) - <andrew.d.lapin@gmail.com>
 + Alexander Gudulin (sagod)
 + Michael Turusov (Sneaky4oe)
 
@@ -18,7 +18,7 @@ License: see LICENSE.txt
 Running the Game
 ----------------
 
-Pre-requirements: pygame 1.9.1 (http://www.pygame.org/download.shtml)
+Pre-requirements: pygame 1.9.1 <http://www.pygame.org/download.shtml>
 
 python start.py
 
@@ -44,9 +44,9 @@ Press the up/down to control Peter, left/right - to speed up/down.
 Uses libs
 -----------------
 
-PyGame - game engine http://www.pygame.org/
+PyGame - game engine <http://www.pygame.org/>
 
-PyGame Animation library - http://inventwithpython.com/pyganim/
+PyGame Animation library - <http://inventwithpython.com/pyganim/>
 
 Gradients lib allow to draw some gradients relatively easy - 
-http://www.pygame.org/project-gradients-307-491.html
+<http://www.pygame.org/project-gradients-307-491.html>

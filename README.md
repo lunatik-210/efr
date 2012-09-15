@@ -32,4 +32,4 @@ There are some objects in the game:
 7) Car shop - to buy buldozer you have to pay 200 score
 8) Buldozer - it requires more gas but protected better
 
-Press the left/right/up/down to control Peter.
+Press the up/down to control Peter, left/right - to speed up/down.

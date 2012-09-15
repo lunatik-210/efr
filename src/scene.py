@@ -85,6 +85,8 @@ class Scene:
             if int(uniform(0,2)) == 1:
                 self.solid_objects[2].append( objects.Object( (int(uniform(800, 900)), int(uniform(300, 500))), 'cleft' ) )
             self.solid_objects[2].append( objects.Object( (800, int(uniform(300, 500))), 'cleft' ) )
+        if self.passed_distance % 12000 == 0:
+            self.solid_objects[1].append( objects.Object( (800, 160), 'repairstation'))
 
         if self.passed_distance % 130 == 0:
             self.objects[1].append( objects.Object( (800, 400), 'double_line' ) )

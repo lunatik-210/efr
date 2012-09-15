@@ -267,6 +267,7 @@ class PigOnTractor():
         self.grunt_sound = Music('grunt.ogg')
 
     def test_action(self, obj):
+
         if obj.name == 'gas_station':
             if obj.rect.contains(self.peter_rect) and self.speed.value() == 0:
                 if self.player_bar.gas < 100 and self.player_bar.score > 0:
@@ -280,6 +281,13 @@ class PigOnTractor():
                     self.player_bar.health += 1.5
                     self.player_bar.score -= 1
                     self.drop_coin_sound.play()
+
+        elif obj.name == 'repairstation':
+           if obj.rect.contains(self.peter_rect) and self.speed.value() == 0 and not self.is_bulldozer:
+                if self.player_bar.score > 200:
+                    self.player_bar.score -= 200
+                    self.player_bar.health = 100
+                    self.change_car()
 
         elif obj.name == 'hedgehog' and obj.status != 'died':
             if self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
@@ -319,11 +327,15 @@ class PigOnTractor():
         if self.player_bar.gas < 0:
             return 'arrested'
         if self.player_bar.health <0:
+            if self.is_bulldozer:
+                self.change_car()
+                self.player_bar.health = 100
+                return None
             return 'died'
         return None
 
     def consume_gas(self):
-        self.player_bar.gas -= self.speed.gas_consumption()
+        self.player_bar.gas -= self.speed.gas_consumption(self.is_bulldozer)
 
     def draw(self, screen):
         self.player_bar.draw(screen)

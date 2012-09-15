@@ -81,6 +81,7 @@ class Speed:
     def __init__(self,):
         self.levels = [0, 25, 20, 10]
         self.consumption = [ 0, 0.30, 0.04, 0.01 ]
+        self.buldozer_consumption = [0, 0.35, 0.08, 0.03]
         self.level = 0
         pygame.time.set_timer(UPDATESCENE, self.value())
 
@@ -106,7 +107,9 @@ class Speed:
         pygame.time.set_timer(UPDATESCENE, self.value())
         self.update()
 
-    def gas_consumption(self):
+    def gas_consumption(self, is_buldozer):
+        if is_buldozer:
+            return self.buldozer_consumption[self.level]
         return self.consumption[self.level]
 
     def draw(self, screen):

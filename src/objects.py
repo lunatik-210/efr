@@ -162,8 +162,8 @@ class PlayerBar:
         self.surface.blit(myFont.render("%s" % self.score , 1, (0,0,0)), (70, 15))
 
         myFont = pygame.font.SysFont("Calibri", 20)
-        self.surface.blit(myFont.render("Health" , 10, (0,0,0)), (5, 85))
-        self.surface.blit(myFont.render("Gas" , 1, (0,0,0)), (5, 105))
+        self.surface.blit(myFont.render("Health", 10, (0,0,0)), (5, 85))
+        self.surface.blit(myFont.render("Gas", 1, (0,0,0)), (5, 105))
 
         self.surface.blit( self.health_bar, (60, 85) )
         self.surface.blit( self.gas_bar, (60, 105) )
@@ -318,6 +318,7 @@ class PigOnTractor():
 
     def draw(self, screen):
         self.player_bar.draw(screen)
+        self.speed.draw(screen)
 
         #   Car:                Bulldozer:
         #       0. Pig              0. Wheels + smoke
@@ -394,7 +395,6 @@ class PigOnTractor():
         self.big_wheel.update(self.speed)
         self.small_wheel.update(self.speed)
         self.smoke.update(self.speed)
-
 
 class Animation:
     def __init__(self):

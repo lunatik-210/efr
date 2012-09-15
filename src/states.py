@@ -84,25 +84,37 @@ class Speed:
         self.level = 0
         pygame.time.set_timer(UPDATESCENE, self.value())
 
+        self.image, self.rect = load_image('1.png', 'alpha')
+
     def up(self):
         if self.level < len(self.levels)-1:
             self.level += 1
         pygame.time.set_timer(UPDATESCENE, self.value())
+        self.update()
 
     def down(self):
         if self.level > 0:
             self.level -= 1
         pygame.time.set_timer(UPDATESCENE, self.value())
+        self.update()
 
     def value(self):
         return self.levels[self.level]
 
     def stop(self):
         self.level = 0
-        pygame.time.set_timer(UPDATESCENE, self.value())        
+        pygame.time.set_timer(UPDATESCENE, self.value())
+        self.update()
 
     def gas_consumption(self):
         return self.consumption[self.level]
+
+    def draw(self, screen):
+        self.rect = screen.blit(self.image, (800-132, 600-90))
+
+    def update(self):
+        level = str(self.level + 1)
+        self.image, self.rect = load_image('%s.png' % level, 'alpha')
 
 class Game(engine.State):
     def init(self):

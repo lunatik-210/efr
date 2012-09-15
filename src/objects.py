@@ -104,10 +104,10 @@ class Hedgehog(Object):
             self.rect = screen.blit(self.bloodshit, (self.x, self.y))
 
 class ProgressBar(pygame.Surface):
-    def __init__(self, start_col, end_color):
-        self.width = 120
-        self.height = 15
-        self.border = 1
+    def __init__(self, start_col, end_color, sizes = (120, 15, 1)):
+        self.width = sizes[0]
+        self.height = sizes[1]
+        self.border = sizes[2]
         self.start_col, self.end_color = start_col, end_color
         self.sub_width = self.width-self.border*2
         self.sub_height = self.height-self.border*2
@@ -162,6 +162,8 @@ class Police:
         self.left_wheel = SmallWheel()
         self.right_wheel = SmallWheel()
         self.speed = speed
+        self.police_bar = ProgressBar((0, 0, 255, 150), (200, 0, 0, 255), (200, 20, 1))
+        self.distance = 70
 
     def draw(self, screen):
         self.rect = screen.blit(self.image, (self.x, self.y))
@@ -169,7 +171,12 @@ class Police:
         self.left_wheel.draw(screen, (self.x+47, self.y+102))
         self.right_wheel.draw(screen, (self.x+170, self.y+102))
 
+        screen.blit( self.police_bar, (10, 10) )
+        myFont = pygame.font.SysFont("Calibri", 20)
+        screen.blit(myFont.render("Cops are about to grab your", 1, (0, 0, 0)), (25, 13))
+
     def update(self):
+        self.police_bar.update(self.distance)
         self.left_wheel.update(self.speed)
         self.right_wheel.update(self.speed)
 

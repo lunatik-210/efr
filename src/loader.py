@@ -5,9 +5,10 @@ from pygame.locals import *
 
 import os
 
+data_py = os.path.abspath(os.path.dirname(__file__))
+data_dir = os.path.normpath(os.path.join(data_py, '..', 'data'))
+
 def load_image(name, colorkey=None):
-    data_py = os.path.abspath(os.path.dirname(__file__))
-    data_dir = os.path.normpath(os.path.join(data_py, '..', 'data'))
     fullname = os.path.join(data_dir, name)
     try:
         image = pygame.image.load(fullname)

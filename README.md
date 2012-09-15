@@ -18,7 +18,7 @@ License: see LICENSE.txt
 Running the Game
 ----------------
 
-Linux pre-requirements: pygame 1.9.1 (http://www.pygame.org/download.shtml)
+Pre-requirements: pygame 1.9.1 (http://www.pygame.org/download.shtml)
 
 python start.py
 

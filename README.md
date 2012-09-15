@@ -4,7 +4,10 @@ Escape from Russia
 Entry in PyWeek #15  <http://www.pyweek.org/15/>
 URL: https://github.com/lunatik-210/efr
 Team: PyGeeks
-Members: Andrew Lapin (lunatik) - andrew.d.lapin@gmail.com, Alexander Gudulin (sagod), Michael Turusov (Sneaky4oe)
+Members: 
++ Andrew Lapin (lunatik) - andrew.d.lapin@gmail.com
++ Alexander Gudulin (sagod)
++ Michael Turusov (Sneaky4oe)
 License: see LICENSE.txt
 
 
@@ -26,7 +29,7 @@ There are some objects in the game:
 + Cops - they are tries to arrest you!
 + Box - there're some score there
 + Hedgehog - slows you and gives a bit of score
-+  Cleft - hits tractor
++ Cleft - hits tractor
 + Gas Staton - to buy gas
 + Repair station - to repair tractor
 + Car shop - to buy buldozer you have to pay 200 score

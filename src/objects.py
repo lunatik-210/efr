@@ -3,6 +3,7 @@ from loader import load_image
 from config import *
 import pyganim
 import gradients
+import random
 
 objects = { 'tree' : ['tree1', 'tree2', 'tree3', 'tree4'], 
             'cloud' : ['cloud1', 'cloud2', 'cloud3', 'cloud4'], 
@@ -35,6 +36,58 @@ class Object:
 
     def event(self, events):
         pass
+
+class Hedgehog(Object):
+    def __init__(self, coords, borders, delay = 0.1):
+        Object.__init__(self, coords, 'hedgehog')
+        self.left_standing = load_image('hedgehog_l.png', 'alpha')[0]
+        self.right_standing = load_image('hedgehog.png', 'alpha')[0]
+        self.bloodshit = load_image('bloodshit.png', 'alpha')[0]
+        self.animations = {}
+        self.animations['right_walk'] = pyganim.PygAnimation([('../data/hedgehog.png', delay),
+                                                              ('../data/hedgehog_run.png', delay)])
+        self.animations['left_walk']  = pyganim.PygAnimation([('../data/hedgehog_l.png', delay),
+                                                              ('../data/hedgehog_run_l.png', delay)])
+        self.animation_manager = pyganim.PygConductor(self.animations)
+        self.status = None
+        self.borders = borders
+        self.direction_x = random.uniform(-3, 3)
+        self.direction_y = random.uniform(-3, 3)
+
+    def update(self):
+        if self.status == 'died':
+            return
+        if not self.borders[0] < self.y < self.borders[1]:
+            self.direction_y *= -1
+
+        self.x += self.direction_x
+        self.y += self.direction_y
+
+        if self.direction_x > 0:
+            self.animation_manager.play()
+            self.status = 'right_walk'
+        elif self.direction_x < 0:
+            self.animation_manager.play()
+            self.status = 'left_walk'
+        elif self.direction_x == 0:
+            self.animation_manager.stop()
+            if self.status == 'right_walk':
+                self.status = 'right_standing'
+            elif self.status == 'left_walk':
+                self.status = 'left_standing'
+
+    def draw(self, screen):
+        if self.status == 'right_walk':
+            self.rect = self.animations[self.status].blit(screen, (self.x, self.y))
+        elif self.status == 'left_walk':
+            self.rect = self.animations[self.status].blit(screen, (self.x, self.y))
+        elif self.status == 'right_standing':
+            self.rect = screen.blit(self.right_standing, (self.x, self.y))
+        elif self.status == 'left_standing':
+            self.rect = screen.blit(self.left_standing, (self.x, self.y))
+        elif self.status == 'died':
+            self.rect = screen.blit(self.bloodshit, (self.x, self.y))
+
 
 class ProgressBar(pygame.Surface):
     def __init__(self, start_col, end_color):
@@ -119,6 +172,22 @@ class PigOnTractor():
                 if self.player_bar.health < 100 and self.player_bar.score > 0:
                     self.player_bar.health += 2
                     self.player_bar.score -= 1
+        elif obj.name == 'hedgehog' and obj.status != 'died':
+            if self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect):
+                obj.status = 'died'
+                self.player_bar.health -= 1
+                self.player_bar.score += 2
+            elif self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
+                obj.status = 'died'
+                self.player_bar.health -= 1
+                self.player_bar.score += 2
+        elif obj.name == 'cleft':
+            if self.big_wheel.rect != None and self.big_wheel.rect.colliderect(obj.rect):
+                obj.status = 'died'
+                self.player_bar.health -= 3
+            elif self.small_wheel.rect != None and self.small_wheel.rect.colliderect(obj.rect):
+                obj.status = 'died'
+                self.player_bar.health -= 3
 
     def get_score(self):
         return self.player_bar.score
@@ -209,17 +278,18 @@ class PigOnTractor():
 
 class Animation:
     def __init__(self):
-        pass
+        self.rect = None
 
     def update(self):
         self.image.play()
 
     def draw(self, screen, (x, y)):
-        self.image.blit(screen, (x, y))
+        self.rect = self.image.blit(screen, (x, y))
 
 
 class BigWheel(Animation):
     def __init__(self, delay=0.1):
+        Animation.__init__(self)
         self.delay = delay
         self.image = pyganim.PygAnimation([('../data/big_wheel1.png', self.delay),
                                           ('../data/big_wheel2.png', self.delay),
@@ -227,6 +297,7 @@ class BigWheel(Animation):
 
 class SmallWheel(Animation):
     def __init__(self, delay=0.1):
+        Animation.__init__(self)
         self.delay = delay
         self.image = pyganim.PygAnimation([('../data/small_wheel1.png', self.delay),
                                           ('../data/small_wheel2.png', self.delay),
@@ -234,6 +305,7 @@ class SmallWheel(Animation):
 
 class Smoke(Animation):
     def __init__(self, delay=0.1):
+        Animation.__init__(self)
         self.delay = delay
         self.image = pyganim.PygAnimation([('../data/smoke1.png', self.delay),
                                            ('../data/smoke2.png', self.delay),

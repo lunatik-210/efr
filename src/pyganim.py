@@ -149,9 +149,9 @@ class PygAnimation(object):
         if self.isFinished():
             self.state = STOPPED
         if not self.visibility or self.state == STOPPED:
-            return
+            return None
         frameNum = findStartTime(self._startTimes, self.elapsed)
-        destSurface.blit(self.getFrame(frameNum), dest)
+        return destSurface.blit(self.getFrame(frameNum), dest)
 
 
     def getFrame(self, frameNum):

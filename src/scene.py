@@ -25,7 +25,7 @@ class Scene:
 
         self.player = player
         self.objects = { 1 : [], 2 : [], 3 : [], 4 : [] }
-        self.solid_objects = { 1 : [] }
+        self.solid_objects = { 1 : [], 2 : [], 3 : [] }
         
         self.x_bias = 5
 
@@ -57,6 +57,11 @@ class Scene:
         if self.passed_distance % 4500 == 0:
             house_n = (int)(uniform(0, 2))
             self.solid_objects[1].append( objects.Object( (800, 210), objects.objects['house'][house_n] ) )
+        if self.passed_distance % 1600 == 0:
+            for i in range(int(uniform(1,3))):
+                self.solid_objects[3].append( objects.Hedgehog( (800, int(uniform(300, 500))), (300, 500)) )
+        if self.passed_distance % 1900 == 0:
+            self.solid_objects[2].append( objects.Object( (800, int(uniform(300, 500))), 'cleft' ) )
         if self.passed_distance % 130 == 0:
             self.objects[1].append( objects.Object( (800, 400), 'double_line' ) )
         if self.passed_distance % 160 == 0:

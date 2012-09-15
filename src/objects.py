@@ -159,7 +159,8 @@ class PigOnTractor():
     def __init__(self, coords, speed):
         
         self.x, self.y = coords
-        self.image, self.rect = load_image('tractor_body.png', 'alpha')
+        self.image_car, self.rect = load_image('tractor_body.png', 'alpha')
+        self.image = self.image_car
         self.image_bldzr, self.rect_bldzr = load_image('bulldozer.png', 'alpha')
         self.width, self.height = self.image.get_size()
         self.rate = 5
@@ -225,9 +226,10 @@ class PigOnTractor():
         #       0. Pig              0. Wheels + smoke
         #       1. Car              1. Bulldozer
         #       2. Wheels + smoke
-        
+
         if not self.is_bulldozer:
             self.peter_rect = screen.blit(self.peter, (self.x-14, self.y-20))
+            self.image = self.image_car
             self.rect = screen.blit(self.image, (self.x, self.y))
 
         self.big_wheel.draw(screen, (self.x, self.y+52))
@@ -239,7 +241,7 @@ class PigOnTractor():
             self.rect = screen.blit(self.image, (self.x, self.y))
             
     def change_car(self):
-        self.is_bulldozer = True
+        self.is_bulldozer = not self.is_bulldozer
 
     def event(self, events):
         for event in events:

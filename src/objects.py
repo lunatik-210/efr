@@ -126,7 +126,7 @@ class ProgressBar(pygame.Surface):
 
 class PlayerBar:
     def __init__(self):
-        self.score = 100
+        self.score = 0
         self.health = 100
         self.gas = 100
         self.health_bar = ProgressBar((100, 0, 0, 100), (255, 0, 0, 255))
@@ -162,7 +162,7 @@ class Police:
         self.left_wheel = SmallWheel()
         self.right_wheel = SmallWheel()
         self.speed = speed
-        self.police_bar = ProgressBar((0, 0, 255, 150), (200, 0, 0, 255), (200, 20, 1))
+        self.police_bar = ProgressBar((0, 0, 255, 150), (200, 0, 0, 255), (290, 40, 1))
         self.distance = 0
         self.status = None
 
@@ -173,8 +173,8 @@ class Police:
         self.right_wheel.draw(screen, (self.x+170, self.y+102))
 
         screen.blit( self.police_bar, (10, 10) )
-        myFont = pygame.font.SysFont("Calibri", 20)
-        screen.blit(myFont.render("Cops are about to grab your", 1, (0, 0, 0)), (25, 13))
+        myFont = pygame.font.SysFont("Calibri", 30)
+        screen.blit(myFont.render("Cops are about to grab your", 1, (0, 0, 0)), (20, 20))
 
     def update(self):
         if self.speed.value() == 0:
@@ -259,7 +259,7 @@ class PigOnTractor():
                     self.player_bar.score += 3
                 else:
                     self.player_bar.health -= 1
-                    self.player_bar.score += 3
+                    self.player_bar.score += 5
                     self.speed.down()
                 self.hedgehog_sound.play()
 
@@ -277,7 +277,7 @@ class PigOnTractor():
                     self.player_bar.health -= 4
                 else:
                     self.player_bar.health -= 8
-                self.player_bar.score += random.randint(10, 20)
+                self.player_bar.score += random.randint(10, 30)
                 self.drop_box_sound.play()
                 self.speed.stop()
 

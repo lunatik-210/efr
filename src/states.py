@@ -62,7 +62,7 @@ class About(engine.State):
 class Speed:
     def __init__(self,):
         self.levels = [0, 25, 20, 10]
-        self.consumption = [ 0, 0.30, 0.04, 0.02 ]
+        self.consumption = [ 0, 0.30, 0.04, 0.01 ]
         self.level = 0
         pygame.time.set_timer(UPDATESCENE, self.value())
 

@@ -95,7 +95,7 @@ class Game(engine.State):
 
         self.player = objects.PigOnTractor((250, 300), self.speed)
 
-        self.police = objects.Police((-100, 300), self.speed)
+        self.police = objects.Police((-300, 300), self.speed)
 
         self.scene = Scene(self.player)
 
@@ -130,6 +130,8 @@ class Game(engine.State):
         self.player.update()
         self.scene.update()
         self.police.update()
+        if self.police.status == 'arrest':
+            return GameOver(self.game, self.debug, 'game_over_arrested.png', self.player.get_score())
         if self.player.status() == 'arrested':
             return GameOver(self.game, self.debug, 'game_over_arrested.png', self.player.get_score())
         elif self.player.status() == 'died':

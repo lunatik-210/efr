@@ -163,7 +163,8 @@ class Police:
         self.right_wheel = SmallWheel()
         self.speed = speed
         self.police_bar = ProgressBar((0, 0, 255, 150), (200, 0, 0, 255), (200, 20, 1))
-        self.distance = 70
+        self.distance = 0
+        self.status = None
 
     def draw(self, screen):
         self.rect = screen.blit(self.image, (self.x, self.y))
@@ -176,9 +177,38 @@ class Police:
         screen.blit(myFont.render("Cops are about to grab your", 1, (0, 0, 0)), (25, 13))
 
     def update(self):
+        if self.speed.value() == 0:
+            self.distance += 0.4
+        elif self.speed.value() == 25:
+            self.distance += 0.3
+        elif self.speed.value() == 20:
+            self.distance += 0.2
+        elif self.speed.value() == 10:
+            self.distance -= 0.1
+            self.gap_down()
+
+        if self.distance < 0:
+            self.distance = 0
+        if self.distance > 100:
+            self.distance = 100
+
+        if self.distance > 70:
+            self.gap_up()
+
         self.police_bar.update(self.distance)
         self.left_wheel.update(self.speed)
         self.right_wheel.update(self.speed)
+
+        if self.x > 130:
+            self.status = 'arrest'
+
+    def gap_up(self):
+        if self.x < 300:
+            self.x += 2
+
+    def gap_down(self):
+        if self.x > -300:
+            self.x -= 3
 
 class PigOnTractor():
     def __init__(self, coords, speed):
